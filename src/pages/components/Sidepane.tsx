@@ -1,21 +1,10 @@
 import React from "react";
-
-type NavLinkProps = {
-  link?: string;
-  children: React.ReactNode;
-};
-const NavLink = ({ children }: NavLinkProps) => {
-  return (
-    <li className="p-2 hover:bg-slate-200 hover:text-black">
-      <a>{children}</a>
-    </li>
-  );
-};
+import NavLink from "./Navlink";
 
 const Sidepane = () => {
   return (
-    <div className="w-3/12  bg-slate-800 text-white">
-      <h2 className="p-3 text-xl font-bold">Cryptoinfo</h2>
+    <div className="w-2/12  bg-slate-800 text-white">
+      <h2 className="p-5 text-2xl font-bold">Cryptoinfo</h2>
       <ul>
         <NavLink link="somelink">Home</NavLink>
         <NavLink link="somelink">Cryptocurrencies</NavLink>
