@@ -7,18 +7,6 @@ const STATS = [
     value: "12,155",
   },
   {
-    name: "Total Cryptocurrencies",
-    value: "12,155",
-  },
-  {
-    name: "Total Cryptocurrencies",
-    value: "12,155",
-  },
-  {
-    name: "$2.3T",
-    value: "12,155",
-  },
-  {
     name: "Total Markets",
     value: "79.9k",
   },
@@ -35,7 +23,7 @@ const GlobalStats = () => {
   return (
     <section className="bg-slate-100">
       <h2 className="px-3 py-2 text-xl font-bold">Crypto stats</h2>
-      <div className="grid grid-cols-2 gap-3 px-3 py-2 ">
+      <div className="flex space-x-20 overflow-x-auto p-8">
         {STATS.map((stat) => (
           <CryptoStat key={stat.name} title={stat.name} value={stat.value} />
         ))}
