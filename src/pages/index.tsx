@@ -3,6 +3,7 @@ import GlobalStats from '@/components/GlobalStats';
 import Sidepane from '@/components/Sidepane';
 import CryptoList from '@/components/CryptoList';
 import NewsList from '@/components/NewsList';
+import ExchangeList from '@/components/ExchangeList';
 
 const Home: NextPage = () => {
   return (
@@ -14,6 +15,12 @@ const Home: NextPage = () => {
           <h2 className='text-lg font-bold'>Cryptocurrency prices</h2>
           <div className='flex px-4 py-2'>
             <CryptoList showAll={false} />
+          </div>
+        </div>
+        <div className='px-5 py-3'>
+          <h2 className='text-lg font-bold'>Exchanges</h2>
+          <div className='flex px-4 py-2'>
+            <ExchangeList showAll={false} />
           </div>
         </div>
         <NewsList />

@@ -1,4 +1,5 @@
 export type Crypto = {
+  rank: number;
   id: string;
   name: string;
   shortName: string;
@@ -17,7 +18,8 @@ export const CRYPTO_COLUMNS = [
 ];
 export const CRYPTOS: Crypto[] = [
   {
-    id: '1',
+    rank: 1,
+    id: 'bitcoin',
     name: 'Bitcoin',
     shortName: 'BTC',
     price: 19654.98,
@@ -26,8 +28,9 @@ export const CRYPTOS: Crypto[] = [
     marketCap: 374.17e9,
   },
   {
-    id: '2',
-    name: 'Ehereum',
+    rank: 2,
+    id: 'ethereum',
+    name: 'Ethereum',
     shortName: 'ETH',
     price: 1343.13,
     change24h: 0.19,
@@ -35,7 +38,8 @@ export const CRYPTOS: Crypto[] = [
     marketCap: 162.99e9,
   },
   {
-    id: '3',
+    rank: 3,
+    id: 'Tether',
     name: 'Tether',
     shortName: 'USDT',
     price: 1.02,
@@ -44,7 +48,8 @@ export const CRYPTOS: Crypto[] = [
     marketCap: 68.34e9,
   },
   {
-    id: '4',
+    rank: 4,
+    id: 'USDC',
     name: 'USD Coin',
     shortName: 'USDC',
     price: 1,
@@ -53,7 +58,8 @@ export const CRYPTOS: Crypto[] = [
     marketCap: 46.06e9,
   },
   {
-    id: '5',
+    rank: 5,
+    id: 'BNB',
     name: 'BNB',
     shortName: 'BNB',
     price: 285.09,
@@ -62,7 +68,8 @@ export const CRYPTOS: Crypto[] = [
     marketCap: 45.36e9,
   },
   {
-    id: '6',
+    rank: 6,
+    id: 'XRP',
     name: 'XRP',
     shortName: 'XRP',
     price: 0.5268,
@@ -71,7 +78,8 @@ export const CRYPTOS: Crypto[] = [
     marketCap: 25.91e9,
   },
   {
-    id: '7',
+    rank: 7,
+    id: 'BUSD',
     name: 'Binance USD',
     shortName: 'BUSD',
     price: 1,
