@@ -1,4 +1,4 @@
-export type Crypto = {
+export type Coin = {
   rank: number;
   id: string;
   name: string;
@@ -16,7 +16,7 @@ export const CRYPTO_COLUMNS = [
   '24h Volume',
   'Market Cap',
 ];
-export const CRYPTOS: Crypto[] = [
+export const CRYPTOS: Coin[] = [
   {
     rank: 1,
     id: 'bitcoin',

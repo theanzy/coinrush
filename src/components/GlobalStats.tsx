@@ -21,9 +21,9 @@ const STATS = [
 ];
 const GlobalStats = () => {
   return (
-    <section>
-      <h2 className='px-5 py-2 text-xl font-bold'>Crypto stats</h2>
-      <div className='flex flex-wrap items-center justify-center gap-4 p-6'>
+    <>
+      <h2 className='py-2 text-xl font-bold'>Crypto stats</h2>
+      <div className='flex flex-wrap items-center justify-center gap-4 p-2'>
         {STATS.map((stat) => (
           <CryptoStat
             key={stat.name}
@@ -32,7 +32,7 @@ const GlobalStats = () => {
           />
         ))}
       </div>
-    </section>
+    </>
   );
 };
 
