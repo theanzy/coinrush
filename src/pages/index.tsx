@@ -7,21 +7,17 @@ import ExchangeList from '@/components/ExchangeList';
 
 const Home: NextPage = () => {
   return (
-    <div className='flex items-stretch justify-start bg-slate-100'>
+    <div className='flex items-stretch justify-start '>
       <Sidepane />
       <main className='flex w-full flex-col'>
         <GlobalStats />
         <div className='px-5 py-3'>
-          <h2 className='text-lg font-bold'>Cryptocurrency prices</h2>
-          <div className='flex px-4 py-2'>
-            <CryptoList showAll={false} />
-          </div>
+          <h2 className='mb-3 text-lg font-bold'>Cryptocurrency prices</h2>
+          <CryptoList showAll={false} />
         </div>
         <div className='px-5 py-3'>
-          <h2 className='text-lg font-bold'>Exchanges</h2>
-          <div className='flex px-4 py-2'>
-            <ExchangeList showAll={false} />
-          </div>
+          <h2 className='mb-3 text-lg font-bold'>Exchanges</h2>
+          <ExchangeList showAll={false} />
         </div>
         <NewsList />
       </main>
