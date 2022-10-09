@@ -5,7 +5,8 @@ import React from 'react';
 const ExchangesPage = () => {
   return (
     <Layout>
-      <h2>Exchanges</h2>
+      <h2 className='text-2xl font-bold'>Exchanges</h2>
+      <div className='p-2' />
       <ExchangeList />
     </Layout>
   );

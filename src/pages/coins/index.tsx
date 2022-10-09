@@ -5,7 +5,8 @@ import Layout from '@/components/Layout';
 const CryptosPage = () => {
   return (
     <Layout>
-      <h2>Coins</h2>
+      <h2 className='text-2xl font-bold'>Coins</h2>
+      <div className='p-2' />
       <CoinList />
     </Layout>
   );

@@ -22,8 +22,8 @@ const STATS = [
 const GlobalStats = () => {
   return (
     <>
-      <h2 className='py-2 text-xl font-bold'>Crypto stats</h2>
-      <div className='flex flex-wrap items-center justify-center gap-4 p-2'>
+      <h2 className='py-3 text-xl font-bold'>Crypto stats</h2>
+      <div className='flex flex-wrap items-center justify-start gap-4'>
         {STATS.map((stat) => (
           <CryptoStat
             key={stat.name}

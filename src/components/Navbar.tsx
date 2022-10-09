@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 const Navbar = () => {
@@ -5,7 +6,9 @@ const Navbar = () => {
   return (
     <nav className='flex w-full min-w-full flex-wrap items-center justify-between border-b bg-white py-4'>
       <div className='mr-6 flex flex-shrink-0 items-center text-gray-800'>
-        <span className='text-xl font-bold tracking-tight'>Cryptoinfo</span>
+        <Link href='/'>
+          <a className='text-xl font-bold tracking-tight'>Cryptoinfo</a>
+        </Link>
       </div>
       <div className='block md:hidden'>
         <button
@@ -27,31 +30,23 @@ const Navbar = () => {
           showMenu ? 'block' : 'hidden'
         } md:items-center' w-full flex-grow md:flex md:w-auto`}
       >
-        <div className='text-md mt-3 flex flex-col gap-5 md:mt-0 md:flex-grow md:flex-row'>
-          <a
-            href='#responsive-header'
-            className='text-gray-800 hover:text-blue-500 md:mt-0 md:inline-block'
-          >
-            Home
-          </a>
-          <a
-            href='#responsive-header'
-            className='text-gray-800 hover:text-blue-500 md:mt-0 md:inline-block'
-          >
-            Coins
-          </a>
-          <a
-            href='#responsive-header'
-            className='text-gray-800 hover:text-blue-500 md:mt-0 md:inline-block'
-          >
-            Exchanges
-          </a>
-          <a
-            href='#responsive-header'
-            className='text-gray-800 hover:text-blue-500 md:mt-0 md:inline-block'
-          >
-            News
-          </a>
+        <div
+          className='text-md mt-3 flex flex-col gap-5 md:mt-0 md:flex-grow md:flex-row 
+        [&>a]:text-gray-800 hover:[&>a]:text-blue-500 md:[&>a]:mt-0 md:[&>a]:inline-block
+        '
+        >
+          <Link href='/'>
+            <a>Home</a>
+          </Link>
+          <Link href='/coins'>
+            <a>Coins</a>
+          </Link>
+          <Link href='/exchanges'>
+            <a>Exchanges</a>
+          </Link>
+          <Link href='/news'>
+            <a>News</a>
+          </Link>
         </div>
       </div>
     </nav>
