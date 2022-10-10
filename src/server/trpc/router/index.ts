@@ -1,3 +1,4 @@
+import { cryptoRouter } from './crypto';
 // src/server/trpc/router/index.ts
 import { t } from '../trpc';
 import { exampleRouter } from './example';
@@ -6,6 +7,7 @@ import { authRouter } from './auth';
 export const appRouter = t.router({
   example: exampleRouter,
   auth: authRouter,
+  crypto: cryptoRouter,
 });
 
 // export type definition of API
