@@ -25,7 +25,9 @@ const GlobalStats = () => {
               <FaBitcoin className='h-6 w-6 text-yellow-600' />
             </div>
             <p className='text-lg text-gray-500'>
-              {numberFormatter.format(globalStats.data?.totalCryptocurrencies)}
+              {numberFormatter.format(
+                globalStats.data?.totalCryptocurrencies || 0
+              )}
             </p>
           </div>
           <div className='rounded border px-8 py-4 shadow-sm'>
@@ -34,7 +36,7 @@ const GlobalStats = () => {
               <FaStoreAlt className='h-6 w-6 text-green-600' />
             </div>
             <p className='text-lg text-gray-500'>
-              {numberFormatter.format(globalStats.data?.totalMarkets)}
+              {numberFormatter.format(globalStats.data?.totalMarkets || 0)}
             </p>
           </div>
           <div className='rounded border px-8 py-4 shadow-sm'>
@@ -62,13 +64,13 @@ const GlobalStats = () => {
             </div>
             <p
               className={`text-lg ${
-                globalStats.data?.total24hChangePercentage > 0
+                (globalStats.data?.total24hChangePercentage || 0) > 0
                   ? 'text-green-600'
                   : 'text-red-600'
               }`}
             >
               {numberFormatter.format(
-                globalStats.data?.total24hChangePercentage
+                globalStats.data?.total24hChangePercentage || 0
               )}
               %
             </p>
