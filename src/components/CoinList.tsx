@@ -61,7 +61,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
         </thead>
 
         <tbody>
-          {coins.map((coin, i) => {
+          {(showAll ? coins : coins.slice(0, 10)).map((coin, i) => {
             if (coins.length === i + 1) {
               return (
                 <tr
