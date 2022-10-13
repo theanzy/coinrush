@@ -10,7 +10,7 @@ type CoinPriceChartProps = {
 
 const PERIODS: Record<string, Record<string, string>> = {
   '24h': { days: '1', interval: '1h' },
-  '7d': { days: '7', interval: '2h' },
+  '7d': { days: '7', interval: '1h' },
   '1m': { days: '30', interval: '12h' },
   '3m': { days: '60', interval: '2d' },
   '1y': { days: '365', interval: '7d' },
@@ -55,8 +55,8 @@ const CoinPriceChart = ({ coinId, coinName }: CoinPriceChartProps) => {
         ))}
       </div>
       <div className='p-3'></div>
-      <div className='flex flex-row items-center justify-center p-2'>
-        {getMarketChart.isLoading ?? <Spinner />}
+      <div className='flex flex-row items-center justify-center'>
+        {getMarketChart.isLoading && <Spinner />}
       </div>
       {localMarketChart && (
         <PriceChart
