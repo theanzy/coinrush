@@ -11,13 +11,11 @@ const CoinPriceChart = ({ coinId, coinName }: CoinPriceChartProps) => {
   return (
     <>
       <div className='pb-3 text-xl font-bold'>{coinName} to USD Chart</div>
-      <div>
-        <PriceChart
-          prices={PRICES}
-          volumes={VOLUMES}
-          title={coinId}
-        />
-      </div>
+      <PriceChart
+        prices={PRICES}
+        volumes={VOLUMES}
+        title={coinId}
+      />
     </>
   );
 };

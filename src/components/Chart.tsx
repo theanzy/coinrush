@@ -83,7 +83,6 @@ type CoinChartProps = {
 
 const PriceChart = (props: CoinChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
   const [prices, setPrices] = useState<any[]>(props.prices);
   const [tooltipData, setTooltipData] = useState<TooltipData>({
     shown: false,
@@ -114,16 +113,16 @@ const PriceChart = (props: CoinChartProps) => {
   };
 
   useLayoutEffect(() => {
-    if (!containerRef.current || !tooltipRef.current) {
+    if (!containerRef.current) {
       return;
     }
     const handleResize = () => {
+      console.log('container width', containerRef?.current?.clientWidth);
       chart.applyOptions({
         width: containerRef?.current?.clientWidth ?? 0,
       });
       chart.timeScale().fitContent();
     };
-    containerRef.current.appendChild(tooltipRef.current);
     const chart = createChart(containerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: COLORS.backgroundColor },
@@ -202,10 +201,11 @@ const PriceChart = (props: CoinChartProps) => {
   return (
     <div
       ref={containerRef}
-      style={{ width: '100%', position: 'relative' }}
+      style={{
+        position: 'relative',
+      }}
     >
       <Tooltip
-        ref={tooltipRef}
         shown={tooltipData.shown}
         date={tooltipData.date}
         title={tooltipData.title}

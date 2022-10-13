@@ -1106,7 +1106,7 @@ const DATA = {
 };
 
 const toTimestamp = (time: number) => {
-  return new Date(time).getTime() / 1000;
+  return time / 1000;
 };
 export const PRICES = DATA.prices.map(([time, value]) => ({
   time: toTimestamp(time as number),

@@ -15,6 +15,7 @@ import { trpc } from '@/utils/trpc';
 import Image from 'next/image';
 import Spinner from '@/components/Spinner';
 import { currencyFormatter, numberFormatter } from '@/utils/format';
+
 const CoinPriceChart = dynamic(import('@/components/CoinPriceChart'), {
   ssr: false,
 });
@@ -38,7 +39,7 @@ const CoinPage = () => {
       )}
       {!getCoin.isLoading && !getCoin.isError && getCoin.data && (
         <div className='pb-10'>
-          <div className='flex flex-row gap-5 border-b pb-10'>
+          <div className='flex flex-col gap-5 border-b pb-10 md:flex-row'>
             <div className='mr-3 w-fit py-3 pl-2 pr-10'>
               <div className='flex flex-row gap-2'>
                 <div>
@@ -117,8 +118,8 @@ const CoinPage = () => {
                 </a>
               </div>
             </div>
-            <div className='flex flex-col gap-4 py-2'>
-              <div>
+            <div className='flex flex-grow flex-col gap-4 py-2'>
+              <div className='border-b pb-5'>
                 <div>
                   {getCoin.data.name} price{' '}
                   <span className='uppercase'>({getCoin.data.shortName})</span>
@@ -132,9 +133,9 @@ const CoinPage = () => {
                   </div>
                 </div>
               </div>
-              <div className='flex flex-row justify-between gap-10'>
+              <div className='flex flex-col justify-start gap-10 md:flex-row'>
                 <div>
-                  <div className='flex flex-row items-center gap-1'>
+                  <div className='flex flex-row justify-start gap-1'>
                     <h2 className='text-lg font-bold text-black'>Market Cap</h2>
                     <FaInfoCircle className=' text-gray-500' />
                   </div>
@@ -153,7 +154,7 @@ const CoinPage = () => {
                   </div>
                 </div>
                 <div>
-                  <div className='flex flex-row items-center justify-center gap-2'>
+                  <div className='flex flex-row items-center justify-start gap-2'>
                     <h2 className='text-lg font-bold text-black'>Volume</h2>
                     <span className='rounded-md bg-gray-200 py-1 px-2 text-xs'>
                       24h
@@ -165,7 +166,7 @@ const CoinPage = () => {
                 </div>
                 <div className='flex flex-col gap-3'>
                   <div className='flex flex-row gap-2'>
-                    <div className='flex flex-row items-center gap-1 text-gray-500'>
+                    <div className='flex flex-row gap-1 text-gray-500'>
                       <h2>Max Supply</h2>
                       <FaInfoCircle />
                     </div>
@@ -195,7 +196,7 @@ const CoinPage = () => {
               </div>
             </div>
           </div>
-          <div className='py-10'>
+          <div className='py-10 '>
             <CoinPriceChart
               coinName={getCoin.data.name}
               coinId={getCoin.data.id}
