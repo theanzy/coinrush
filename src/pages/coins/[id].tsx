@@ -196,7 +196,7 @@ const CoinPage = () => {
               </div>
             </div>
           </div>
-          <div className='py-10 '>
+          <div className='flex flex-col py-10'>
             <CoinPriceChart
               coinName={getCoin.data.name}
               coinId={getCoin.data.id}
@@ -213,7 +213,9 @@ const CoinPage = () => {
                 </span>
               </h3>
               <div className='p-2'></div>
-              <div className='leading-7'>{parse(getCoin.data.description)}</div>
+              <div className=' leading-7 [&>a]:text-blue-600'>
+                {parse(getCoin.data.description)}
+              </div>
             </div>
           )}
         </div>

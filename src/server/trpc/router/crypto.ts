@@ -100,7 +100,28 @@ export const cryptoRouter = t.router({
         maxSupply: result.market_data.max_supply,
         circulatingSupply: result.market_data.circulating_supply,
       };
-      console.log(data);
       return data;
+    }),
+  getMarketChart: t.procedure
+    .input(
+      z.object({ coinId: z.string(), days: z.string(), interval: z.string() })
+    )
+    .mutation(async ({ input }) => {
+      console.log(input.days);
+      const res = await axios.get(
+        `https://api.coingecko.com/api/v3/coins/${input.coinId}/market_chart?vs_currency=usd&days=${input.days}&interval=${input.interval}`
+      );
+      const result = res.data;
+      const prices = result.prices?.map(([time, value]: number[]) => ({
+        time: time ? time / 1000 : 0,
+        value: value ?? 0,
+      }));
+      const volumes = result.total_volumes?.map(([time, value]: number[]) => ({
+        time: time ? time / 1000 : 0,
+        value: value ?? 0,
+      }));
+      const marketChart = { prices, volumes };
+      console.log(marketChart);
+      return marketChart;
     }),
 });

@@ -1,5 +1,10 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { createChart, ColorType, ISeriesApi } from 'lightweight-charts';
+import {
+  createChart,
+  ColorType,
+  ISeriesApi,
+  IChartApi,
+} from 'lightweight-charts';
 import { CrosshairMoveData } from './types';
 import { formatCurrency } from '@/utils/format';
 import { Tooltip } from './ChartTooltip';
@@ -36,8 +41,8 @@ const handleCrosshairMove =
       const dateStr = new Date(timestamp).toUTCString();
       const price = param.seriesPrices.get(series);
       const volume = volumes.find((x) => x.time === param.time);
-      const toolTipHeight = 80;
-      const toolTipWidth = 80;
+      const toolTipHeight = 500;
+      const toolTipWidth = 300;
       const toolTipMargin = 15;
       const coordinate = series.priceToCoordinate(price);
       let shiftedCoordinate = param.point.x - 50;
@@ -83,7 +88,8 @@ type CoinChartProps = {
 
 const PriceChart = (props: CoinChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [prices, setPrices] = useState<any[]>(props.prices);
+  const seriesRef = useRef<ISeriesApi<'Baseline'> | null>(null);
+  const chartRef = useRef<IChartApi | null>(null);
   const [tooltipData, setTooltipData] = useState<TooltipData>({
     shown: false,
     top: 1,
@@ -116,13 +122,7 @@ const PriceChart = (props: CoinChartProps) => {
     if (!containerRef.current) {
       return;
     }
-    const handleResize = () => {
-      console.log('container width', containerRef?.current?.clientWidth);
-      chart.applyOptions({
-        width: containerRef?.current?.clientWidth ?? 0,
-      });
-      chart.timeScale().fitContent();
-    };
+
     const chart = createChart(containerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: COLORS.backgroundColor },
@@ -165,8 +165,7 @@ const PriceChart = (props: CoinChartProps) => {
         },
       },
     });
-
-    chart.timeScale().fitContent();
+    chartRef.current = chart;
     const baselineSeries = chart.addBaselineSeries({
       lineWidth: 1,
       topLineColor: 'rgba( 38, 166, 154, 1)',
@@ -176,28 +175,47 @@ const PriceChart = (props: CoinChartProps) => {
       bottomFillColor1: 'rgba( 239, 83, 80, 0.05)',
       bottomFillColor2: 'rgba( 239, 83, 80, 0.28)',
     });
-
-    chart.subscribeCrosshairMove(
-      handleCrosshairMove({
-        volumes: props.volumes,
-        container: containerRef.current,
-        series: baselineSeries,
-        onCrosshairData: handleCrosshairData,
-      })
-    );
-    baselineSeries.setData(prices);
-    baselineSeries.applyOptions({
-      baseValue: {
-        type: 'price',
-        price: prices[prices.length - 1]?.value ?? 0,
-      },
-    });
-    window.addEventListener('resize', handleResize);
+    seriesRef.current = baselineSeries;
     return () => {
-      window.removeEventListener('resize', handleResize);
       chart.remove();
     };
-  }, []);
+  }, [props.title]);
+
+  useLayoutEffect(() => {
+    if (!chartRef.current || !seriesRef.current || !containerRef.current) {
+      return;
+    }
+    seriesRef.current.setData(props.prices as any[]);
+    seriesRef.current.applyOptions({
+      baseValue: {
+        type: 'price',
+        price: props.prices[props.prices.length - 1]?.value ?? 0,
+      },
+    });
+    chartRef.current.timeScale().fitContent();
+    const crosshairmoveHandler = handleCrosshairMove({
+      volumes: props.volumes,
+      container: containerRef.current,
+      series: seriesRef.current,
+      onCrosshairData: handleCrosshairData,
+    });
+    chartRef.current.unsubscribeCrosshairMove(crosshairmoveHandler);
+    chartRef.current.subscribeCrosshairMove(crosshairmoveHandler);
+    const handleResize = () => {
+      if (!chartRef.current) {
+        return;
+      }
+      chartRef.current.applyOptions({
+        width: containerRef?.current?.clientWidth ?? 0,
+      });
+      chartRef.current.timeScale().fitContent();
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      chartRef?.current?.unsubscribeCrosshairMove(crosshairmoveHandler);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [props.prices]);
   return (
     <div
       ref={containerRef}
