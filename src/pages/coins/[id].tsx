@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
+import dynamic from 'next/dynamic';
+
 import parse from 'html-react-parser';
 import {
   FaFacebook,
@@ -13,6 +15,9 @@ import { trpc } from '@/utils/trpc';
 import Image from 'next/image';
 import Spinner from '@/components/Spinner';
 import { currencyFormatter, numberFormatter } from '@/utils/format';
+const CoinPriceChart = dynamic(import('@/components/CoinPriceChart'), {
+  ssr: false,
+});
 const CoinPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -33,8 +38,8 @@ const CoinPage = () => {
       )}
       {!getCoin.isLoading && !getCoin.isError && getCoin.data && (
         <div className='pb-10'>
-          <div className='flex flex-row gap-5'>
-            <div className='w-fit p-2'>
+          <div className='flex flex-row gap-5 border-b pb-10'>
+            <div className='mr-3 w-fit py-3 pl-2 pr-10'>
               <div className='flex flex-row gap-2'>
                 <div>
                   <Image
@@ -46,18 +51,20 @@ const CoinPage = () => {
                   />
                 </div>
                 <div className='flex flex-col items-start justify-center'>
-                  <div className='text-xl capitalize'>{getCoin.data.name}</div>
+                  <div className='text-xl font-bold capitalize'>
+                    {getCoin.data.name}
+                  </div>
                   <div className='text-sm uppercase text-gray-600'>
                     {getCoin.data.shortName}
                   </div>
                 </div>
               </div>
               <div className='p-2'></div>
-              <div className='text-lg text-gray-600'>
+              <div className='text-lg font-bold text-gray-600'>
                 Rank {getCoin.data.rank}
               </div>
               <div className='p-1'></div>
-              <div className='flex flex-row flex-wrap gap-2 [&>*]:rounded [&>*]:bg-gray-200 [&>*]:px-2'>
+              <div className='flex flex-row flex-wrap gap-3 [&>*]:rounded [&>*]:bg-gray-200 [&>*]:px-3 [&>*]:py-1'>
                 {getCoin.data.homepage && (
                   <a
                     href={getCoin.data.homepage}
@@ -110,11 +117,11 @@ const CoinPage = () => {
                 </a>
               </div>
             </div>
-            <div className='flex flex-col gap-4 p-2'>
+            <div className='flex flex-col gap-4 py-2'>
               <div>
                 <div>
                   {getCoin.data.name} price{' '}
-                  <span className='uppercase'>{getCoin.data.shortName}</span>
+                  <span className='uppercase'>({getCoin.data.shortName})</span>
                 </div>
                 <div className='flex flex-row items-center gap-4'>
                   <div className='text-3xl font-bold'>{`${currencyFormatter.format(
@@ -188,7 +195,12 @@ const CoinPage = () => {
               </div>
             </div>
           </div>
-          <div>TODO chart</div>
+          <div className='py-10'>
+            <CoinPriceChart
+              coinName={getCoin.data.name}
+              coinId={getCoin.data.id}
+            />
+          </div>
           <div>TODO BTC to USD converter</div>
           {getCoin.data.description.length > 0 && (
             <div>

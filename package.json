@@ -19,6 +19,7 @@
     "@trpc/server": "10.0.0-proxy-beta.15",
     "axios": "^1.1.2",
     "html-react-parser": "^3.0.4",
+    "lightweight-charts": "^3.8.0",
     "next": "12.3.1",
     "next-auth": "~4.10.2",
     "react": "18.2.0",
