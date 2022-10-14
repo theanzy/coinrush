@@ -3,8 +3,6 @@ import GlobalStats from '@/components/GlobalStats';
 import CoinList from '@/components/CoinList';
 import NewsList from '@/components/NewsList';
 import ExchangeList from '@/components/ExchangeList';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import Layout from '@/components/Layout';
 
 const Home: NextPage = () => {

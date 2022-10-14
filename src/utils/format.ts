@@ -3,10 +3,19 @@ export const currencyFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-export const numberFormatter = new Intl.NumberFormat('en-US');
+export const numberFormatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumSignificantDigits: 2,
+});
 
-export const formatCurrency = (currency: string) => (amount: number) =>
-  Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-  }).format(amount);
+export const formatPercentage = (amount: number): string => {
+  return `${amount > 0 ? '+' : ''}${numberFormatter.format(amount)}%`;
+};
+
+export const formatCurrency =
+  (currency: string) =>
+  (amount: number): string =>
+    Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+    }).format(amount);

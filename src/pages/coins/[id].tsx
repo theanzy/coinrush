@@ -14,7 +14,11 @@ import {
 import { trpc } from '@/utils/trpc';
 import Image from 'next/image';
 import Spinner from '@/components/Spinner';
-import { currencyFormatter, numberFormatter } from '@/utils/format';
+import {
+  currencyFormatter,
+  formatPercentage,
+  numberFormatter,
+} from '@/utils/format';
 
 const CoinPriceChart = dynamic(import('@/components/CoinPriceChart'), {
   ssr: false,
@@ -124,12 +128,18 @@ const CoinPage = () => {
                   {getCoin.data.name} price{' '}
                   <span className='uppercase'>({getCoin.data.shortName})</span>
                 </div>
-                <div className='flex flex-row items-center gap-4'>
+                <div className='flex flex-row items-center gap-2'>
                   <div className='text-3xl font-bold'>{`${currencyFormatter.format(
                     getCoin.data.price
                   )}`}</div>
-                  <div className='rounded-lg bg-red-600 p-1 text-sm text-white'>
-                    {numberFormatter.format(getCoin.data.changePercentage24h)}%
+                  <div
+                    className={`${
+                      getCoin.data.changePercentage24h < 0
+                        ? 'bg-red-600'
+                        : 'bg-green-600'
+                    } rounded-lg p-1 text-sm text-white`}
+                  >
+                    {formatPercentage(getCoin.data.changePercentage24h)}
                   </div>
                 </div>
               </div>
@@ -147,10 +157,9 @@ const CoinPage = () => {
                         : 'text-green-600'
                     }`}
                   >
-                    {numberFormatter.format(
+                    {formatPercentage(
                       getCoin.data.marketCapChangePercentage24h
                     )}
-                    %
                   </div>
                 </div>
                 <div>

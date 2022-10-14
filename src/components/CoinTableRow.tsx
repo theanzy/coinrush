@@ -1,7 +1,7 @@
 import React from 'react';
 import { Coin } from '@/data/Coin';
 import Image from 'next/image';
-import { currencyFormatter } from '@/utils/format';
+import { currencyFormatter, formatPercentage } from '@/utils/format';
 import Link from 'next/link';
 
 type CoinTableRowProps = {
@@ -41,7 +41,7 @@ const CoinTableRow = ({ coin }: CoinTableRowProps) => {
           coin.percentChange24h < 0 ? 'text-red-600' : 'text-green-600'
         }`}
       >
-        {coin.percentChange24h}
+        {formatPercentage(coin.percentChange24h)}
       </td>
       <td className='text-right'>{currencyFormatter.format(coin.volume24h)}</td>
       <td className='text-right'>{currencyFormatter.format(coin.marketCap)}</td>

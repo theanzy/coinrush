@@ -8,7 +8,11 @@ import {
   FaChartBar,
   FaChartLine,
 } from 'react-icons/fa';
-import { currencyFormatter, numberFormatter } from '@/utils/format';
+import {
+  currencyFormatter,
+  formatPercentage,
+  numberFormatter,
+} from '@/utils/format';
 
 const GlobalStats = () => {
   const globalStats = trpc.crypto.globalStats.useQuery();
@@ -24,7 +28,7 @@ const GlobalStats = () => {
               <h3 className='text-lg font-bold'>Total Coins</h3>
               <FaBitcoin className='h-6 w-6 text-yellow-600' />
             </div>
-            <p className='text-lg text-gray-500'>
+            <p className='text-lg text-gray-700'>
               {numberFormatter.format(
                 globalStats.data?.totalCryptocurrencies || 0
               )}
@@ -35,7 +39,7 @@ const GlobalStats = () => {
               <h3 className='text-lg font-bold'>Total Markets</h3>
               <FaStoreAlt className='h-6 w-6 text-green-600' />
             </div>
-            <p className='text-lg text-gray-500'>
+            <p className='text-lg text-gray-700'>
               {numberFormatter.format(globalStats.data?.totalMarkets || 0)}
             </p>
           </div>
@@ -44,8 +48,8 @@ const GlobalStats = () => {
               <h3 className='text-lg font-bold'>Total Volume</h3>
               <FaChartBar className='h-6 w-6 text-orange-500' />
             </div>
-            <p className='text-lg text-gray-500'>
-              {numberFormatter.format(globalStats.data?.totalVolume || 0)}
+            <p className='text-lg text-gray-700'>
+              {currencyFormatter.format(globalStats.data?.totalVolume || 0)}
             </p>
           </div>
           <div className='rounded border px-8 py-4 shadow-sm'>
@@ -53,7 +57,7 @@ const GlobalStats = () => {
               <h3 className='text-lg font-bold'>Total Market Cap</h3>
               <FaChartArea className='h-6 w-6 text-red-500' />
             </div>
-            <p className='text-lg text-gray-500'>
+            <p className='text-lg text-gray-700'>
               {currencyFormatter.format(globalStats.data?.totalMarketCap || 0)}
             </p>
           </div>
@@ -69,10 +73,9 @@ const GlobalStats = () => {
                   : 'text-red-600'
               }`}
             >
-              {numberFormatter.format(
+              {formatPercentage(
                 globalStats.data?.total24hChangePercentage || 0
               )}
-              %
             </p>
           </div>
         </div>
