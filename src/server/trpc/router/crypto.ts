@@ -2,9 +2,11 @@ import { AsyncReturnType } from '@/utils/tsbs';
 import axios from 'axios';
 import { t } from '../trpc';
 import { z } from 'zod';
+import { COIN_API_URL } from '@/utils/env';
+
 export const cryptoRouter = t.router({
   globalStats: t.procedure.query(async () => {
-    const res = await axios.get('https://api.coingecko.com/api/v3/global');
+    const res = await axios.get(`${COIN_API_URL}/global`);
     const result = res.data.data;
     const totalMarketCap: number = Object.keys(result?.total_market_cap).reduce(
       (sum, currentKey) => {
@@ -31,7 +33,7 @@ export const cryptoRouter = t.router({
     .mutation(async ({ input }) => {
       const getCoins = async (pageNumber: number) => {
         const response = await axios.get(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=30&page=${pageNumber}`
+          `${COIN_API_URL}/coins/markets?vs_currency=usd&per_page=30&page=${pageNumber}`
         );
         return response.data;
       };
@@ -71,7 +73,7 @@ export const cryptoRouter = t.router({
     .mutation(async ({ input }) => {
       console.log(input.id);
       const res = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/${input.id}?community_data=false&localization=false`
+        `${COIN_API_URL}/coins/${input.id}?community_data=false&localization=false`
       );
       const result = res.data;
       const data = {
@@ -109,7 +111,7 @@ export const cryptoRouter = t.router({
     .mutation(async ({ input }) => {
       console.log(input.days);
       const res = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/${input.coinId}/market_chart?vs_currency=usd&days=${input.days}&interval=${input.interval}`
+        `${COIN_API_URL}/coins/${input.coinId}/market_chart?vs_currency=usd&days=${input.days}&interval=${input.interval}`
       );
       const result = res.data;
       const prices = result.prices?.map(([time, value]: number[]) => ({
