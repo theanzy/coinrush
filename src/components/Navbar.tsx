@@ -7,7 +7,7 @@ const Navbar = () => {
     <nav className='flex w-full min-w-full flex-wrap items-center justify-between border-b bg-white py-4'>
       <div className='mr-6 flex flex-shrink-0 items-center text-gray-800'>
         <Link href='/'>
-          <a className='text-xl font-bold tracking-tight'>Cryptoinfo</a>
+          <a className='text-xl font-bold tracking-tight'>Coinrush</a>
         </Link>
       </div>
       <div className='block md:hidden'>
