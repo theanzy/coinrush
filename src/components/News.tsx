@@ -1,10 +1,13 @@
+import Image from 'next/image';
 import React from 'react';
 
 type News = {
   title: string;
-  imageUrl: string;
+  url: string;
+  urlToImage: string;
   source: string;
-  date: string;
+  publishedAt: string;
+  description: string;
 };
 
 type NewsProps = {
@@ -13,19 +16,37 @@ type NewsProps = {
 
 const News = ({ news }: NewsProps) => {
   return (
-    <div className='flex flex-col'>
-      <div className='mb-3 flex flex-row  gap-3'>
-        <div className='h-20 w-20 bg-red-100 hover:cursor-pointer'>
-          {news.imageUrl}
-        </div>
-        <div className='flex flex-col gap-1'>
-          <div className='text-large font-bold hover:cursor-pointer hover:text-blue-700'>
+    <div className='flex flex-row gap-5'>
+      <a
+        href={news.url}
+        rel='noopener noreferrer'
+        target='_blank'
+        className='relative h-[150px] basis-1/5 cursor-pointer overflow-hidden rounded-lg'
+      >
+        <Image
+          className='cursor-pointer duration-75 hover:scale-110'
+          src={news.urlToImage ?? '/static/images/article-placeholder.png'}
+          alt={news.title}
+          layout='fill'
+        />
+      </a>
+      <div className='flex basis-4/5 flex-col gap-1'>
+        <div className='cursor-pointer text-xl font-bold hover:text-blue-700'>
+          <a
+            href={news.url}
+            rel='noopener noreferrer'
+            target='_blank'
+          >
             {news.title}
-          </div>
-          <div className='flex gap-5'>
-            <div>{news.source}</div>
-            <div>{news.date}</div>
-          </div>
+          </a>
+        </div>
+        <div>
+          {news.description.slice(0, 300)}
+          {news.description.length > 300 ? '...' : ''}
+        </div>
+        <div className='flex flex-row gap-5 text-sm text-gray-500'>
+          <div>{news.source}</div>
+          <div>{news.publishedAt}</div>
         </div>
       </div>
     </div>

@@ -32,7 +32,8 @@ const ExchangeList = ({ showAll = true }: ExchangeListProps) => {
           ...prev,
           [pageNumber]: response.data,
         }));
-      });
+      })
+      .catch((err) => console.log(err));
   }, [pageNumber, totalNumber, showAll, exchanges]);
 
   return (
@@ -90,6 +91,11 @@ const ExchangeList = ({ showAll = true }: ExchangeListProps) => {
       {getExchanges.isLoading && (
         <div className='flex flex-row items-center justify-center py-10'>
           <Spinner />
+        </div>
+      )}
+      {exchanges && exchanges[pageNumber]?.length === 0 && (
+        <div className='flex flex-row justify-center p-10 text-red-600'>
+          No more exchanges
         </div>
       )}
       {totalNumber && showAll && (

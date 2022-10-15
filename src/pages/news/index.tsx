@@ -5,7 +5,9 @@ import React from 'react';
 const NewsPage = () => {
   return (
     <Layout>
-      <NewsList />
+      <div className='mb-24'>
+        <NewsList showAll={true} />
+      </div>
     </Layout>
   );
 };
