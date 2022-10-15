@@ -12,30 +12,30 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [coins, setCoins] = useState<any[]>([]);
-  const coinsMutation = trpc.crypto.coins.useMutation();
+  const getCoins = trpc.crypto.coins.useMutation();
   useEffect(() => {
     if (pageNumber > 1 && !showAll) {
       return;
     }
-    if (!coinsMutation.isLoading && hasMore) {
-      coinsMutation.mutate({ pageNumber });
+    if (!getCoins.isLoading && hasMore) {
+      getCoins.mutate({ pageNumber });
     }
   }, [pageNumber]);
   useEffect(() => {
-    if (coinsMutation.isLoading || !coinsMutation.data) {
+    if (getCoins.isLoading || !getCoins.data) {
       return;
     }
-    if (coinsMutation.data.length > 0) {
-      setCoins((prev: any[]) => [...prev, ...coinsMutation.data]);
+    if (getCoins.data.length > 0) {
+      setCoins((prev: any[]) => [...prev, ...getCoins.data]);
     } else {
       console.log('set has more');
       setHasMore(false);
     }
-  }, [coinsMutation.data, showAll]);
+  }, [getCoins.data, showAll]);
 
   const lastRowRef = useCallback(
     (node: HTMLTableRowElement) => {
-      if (coinsMutation.isLoading) return;
+      if (getCoins.isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0]?.isIntersecting && hasMore) {
@@ -44,7 +44,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
       });
       if (node) observer.current.observe(node);
     },
-    [coinsMutation.isLoading, hasMore]
+    [getCoins.isLoading, hasMore]
   );
   return (
     <div>
@@ -59,7 +59,6 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
             <th className='text-right'>Market Cap (USD)</th>
           </tr>
         </thead>
-
         <tbody>
           {(showAll ? coins : coins.slice(0, 10)).map((coin, i) => {
             if (coins.length === i + 1) {
@@ -84,8 +83,8 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
           })}
         </tbody>
       </table>
-      {showAll && coinsMutation.isLoading && (
-        <div className='flex flex-row items-center justify-center p-3'>
+      {getCoins.isLoading && (
+        <div className='flex flex-row items-center justify-center p-10'>
           <Spinner />
         </div>
       )}

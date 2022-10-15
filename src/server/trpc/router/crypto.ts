@@ -71,7 +71,6 @@ export const cryptoRouter = t.router({
   getCoin: t.procedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
-      console.log(input.id);
       const res = await axios.get(
         `${COIN_API_URL}/coins/${input.id}?community_data=false&localization=false`
       );
@@ -109,7 +108,6 @@ export const cryptoRouter = t.router({
       z.object({ coinId: z.string(), days: z.string(), interval: z.string() })
     )
     .mutation(async ({ input }) => {
-      console.log(input.days);
       const res = await axios.get(
         `${COIN_API_URL}/coins/${input.coinId}/market_chart?vs_currency=usd&days=${input.days}&interval=${input.interval}`
       );
@@ -123,7 +121,52 @@ export const cryptoRouter = t.router({
         value: value ?? 0,
       }));
       const marketChart = { prices, volumes };
-      console.log(marketChart);
       return marketChart;
+    }),
+  getExchanges: t.procedure
+    .input(
+      z.object({
+        totalNumber: z.number().optional().nullish(),
+        pageNumber: z.number(),
+        perPage: z.number().optional().default(30),
+      })
+    )
+    .mutation(async ({ input }) => {
+      let total = input.totalNumber;
+      if (total == null || total == undefined) {
+        const listResponse = await axios.get(`${COIN_API_URL}/exchanges/list`);
+        total = listResponse.data.length;
+      }
+
+      const res = await axios.get(
+        `${COIN_API_URL}/exchanges?per_page=${input.perPage}&page=${input.pageNumber}`
+      );
+      const result = res.data;
+      const exchanges = result.map(
+        (item: {
+          id: string;
+          trust_score_rank: number;
+          name: string;
+          trust_score: number;
+          url: string;
+          image: string;
+          trade_volume_24h_btc: number;
+        }) => {
+          return {
+            id: item.id,
+            rank: item.trust_score_rank,
+            name: item.name,
+            trustScore: item.trust_score,
+            url: item.url,
+            imageUrl: item.image,
+            tradeVolume24hBTC: item.trade_volume_24h_btc,
+          };
+        }
+      );
+      const response = {
+        total,
+        data: exchanges,
+      };
+      return response;
     }),
 });

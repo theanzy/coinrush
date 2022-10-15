@@ -19,3 +19,11 @@ export const formatCurrency =
       style: 'currency',
       currency: currency,
     }).format(amount);
+
+export const formatUrl = (url: string): string => {
+  const splitted = url.match(/(?:[^\\/]|\/\/)+/g);
+  if (splitted && splitted?.length > 1) {
+    return splitted[0]?.replace('r.', 'www.') ?? url;
+  }
+  return url;
+};
