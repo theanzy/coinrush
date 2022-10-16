@@ -1,27 +1,29 @@
 import React from 'react';
 import { Coin } from '@/data/Coin';
 import Image from 'next/image';
-import { currencyFormatter, formatPercentage } from '@/utils/format';
+import { formatCurrency, formatPercentage } from '@/utils/format';
 import Link from 'next/link';
+import useIsMobile from 'src/hooks/useIsMobile';
 
 type CoinTableRowProps = {
   coin: Coin;
 };
 
 const CoinTableRow = ({ coin }: CoinTableRowProps) => {
+  const isMobile = useIsMobile();
   return (
     <>
-      <td>{coin.rank}</td>
+      <td className='hidden md:block'>{coin.rank}</td>
       <td>
         <div className='flex'>
           <Link href={`/coins/${coin.id}`}>
-            <div className='flex items-center justify-center hover:cursor-pointer'>
+            <div className='relative flex w-5  items-center justify-center hover:cursor-pointer md:w-12'>
               <Image
                 className='cursor-pointer'
                 src={coin.imageUrl || '/defaultCoin.png'}
                 alt={coin.shortName}
-                width={45}
-                height={45}
+                layout='fill'
+                objectFit='contain'
               />
             </div>
           </Link>
@@ -35,7 +37,9 @@ const CoinTableRow = ({ coin }: CoinTableRowProps) => {
           </div>
         </div>
       </td>
-      <td className='text-right'>{currencyFormatter.format(coin.price)}</td>
+      <td className='text-right'>
+        {formatCurrency('USD', isMobile ? 'compact' : 'standard')(coin.price)}
+      </td>
       <td
         className={`text-right ${
           coin.percentChange24h < 0 ? 'text-red-600' : 'text-green-600'
@@ -43,8 +47,12 @@ const CoinTableRow = ({ coin }: CoinTableRowProps) => {
       >
         {formatPercentage(coin.percentChange24h)}
       </td>
-      <td className='text-right'>{currencyFormatter.format(coin.volume24h)}</td>
-      <td className='text-right'>{currencyFormatter.format(coin.marketCap)}</td>
+      <td className='text-right'>
+        {formatCurrency('USD', isMobile ? 'compact' : 'standard')(coin.price)}
+      </td>
+      <td className='text-right'>
+        {formatCurrency('USD', isMobile ? 'compact' : 'standard')(coin.price)}
+      </td>
     </>
   );
 };

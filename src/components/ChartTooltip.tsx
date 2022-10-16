@@ -1,5 +1,6 @@
 import { formatCurrency } from '@/utils/format';
 import { forwardRef } from 'react';
+import useIsMobile from 'src/hooks/useIsMobile';
 import { CrosshairMoveData } from './types';
 interface TooltipProps extends Required<CrosshairMoveData> {
   title: string;
@@ -8,6 +9,7 @@ interface TooltipProps extends Required<CrosshairMoveData> {
 export const Tooltip = forwardRef(
   (props: TooltipProps, ref: React.LegacyRef<HTMLDivElement>) => {
     const { top, left, title, volume, price, shown, date } = props;
+    const isMobile = useIsMobile();
     return (
       <div
         style={{
@@ -42,11 +44,11 @@ export const Tooltip = forwardRef(
         </div>
         <div style={{ margin: '4px 0px', color: '#000' }}>
           <span style={{ color: '#777' }}> Price: </span>
-          {formatCurrency('USD')(price)}
+          {formatCurrency('USD', isMobile ? 'compact' : 'standard')(price)}
         </div>
         <div style={{ margin: '4px 0px', color: '#000' }}>
           <span style={{ color: '#777' }}> Volume: </span>
-          {formatCurrency('USD')(volume)}
+          {formatCurrency('USD', isMobile ? 'compact' : 'standard')(volume)}
         </div>
         <div style={{ color: '#777' }}>{date}</div>
       </div>

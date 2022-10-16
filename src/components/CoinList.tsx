@@ -51,7 +51,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
       <table className='table w-full max-w-full table-auto bg-white text-center text-gray-800'>
         <thead className='bg-gray-20 border-b border-t'>
           <tr className='[&>th]:px-2 [&>th]:py-2'>
-            <th>#</th>
+            <th className='hidden md:block'>#</th>
             <th className='text-left'>Name</th>
             <th className='text-right'>Price (USD)</th>
             <th className='text-right'>24h Change (%)</th>

@@ -14,17 +14,15 @@ import {
 import { trpc } from '@/utils/trpc';
 import Image from 'next/image';
 import Spinner from '@/components/Spinner';
-import {
-  currencyFormatter,
-  formatPercentage,
-  numberFormatter,
-} from '@/utils/format';
+import { formatCurrency, formatPercentage } from '@/utils/format';
+import useIsMobile from 'src/hooks/useIsMobile';
 
 const CoinPriceChart = dynamic(import('@/components/CoinPriceChart'), {
   ssr: false,
 });
 const CoinPage = () => {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const { id } = router.query;
 
   const getCoin = trpc.crypto.getCoin.useMutation();
@@ -33,7 +31,6 @@ const CoinPage = () => {
       getCoin.mutate({ id: id as string });
     }
   }, [router.isReady, id]);
-
   return (
     <Layout>
       {getCoin.isLoading && (
@@ -129,9 +126,10 @@ const CoinPage = () => {
                   <span className='uppercase'>({getCoin.data.shortName})</span>
                 </div>
                 <div className='flex flex-row items-center gap-2'>
-                  <div className='text-3xl font-bold'>{`${currencyFormatter.format(
-                    getCoin.data.price
-                  )}`}</div>
+                  <div className='text-3xl font-bold'>{`${formatCurrency(
+                    'USD',
+                    isMobile ? 'compact' : 'standard'
+                  )(getCoin.data.price)}`}</div>
                   <div
                     className={`${
                       getCoin.data.changePercentage24h < 0
@@ -149,7 +147,12 @@ const CoinPage = () => {
                     <h2 className='text-lg font-bold text-black'>Market Cap</h2>
                     <FaInfoCircle className=' text-gray-500' />
                   </div>
-                  <div>{currencyFormatter.format(getCoin.data.marketCap)}</div>
+                  <div>
+                    {formatCurrency(
+                      'USD',
+                      isMobile ? 'compact' : 'standard'
+                    )(getCoin.data.marketCap)}
+                  </div>
                   <div
                     className={`${
                       getCoin.data.changePercentage24h < 0
@@ -170,7 +173,10 @@ const CoinPage = () => {
                     </span>
                   </div>
                   <div>
-                    {currencyFormatter.format(getCoin.data.totalVolume)}
+                    {formatCurrency(
+                      'USD',
+                      isMobile ? 'compact' : 'standard'
+                    )(getCoin.data.totalVolume)}
                   </div>
                 </div>
                 <div className='flex flex-col gap-3'>
@@ -180,7 +186,10 @@ const CoinPage = () => {
                       <FaInfoCircle />
                     </div>
                     <div>
-                      {currencyFormatter.format(getCoin.data.maxSupply)}
+                      {formatCurrency(
+                        'USD',
+                        isMobile ? 'compact' : 'standard'
+                      )(getCoin.data.maxSupply)}
                     </div>
                   </div>
                   <div className='flex flex-row gap-2'>
@@ -189,7 +198,10 @@ const CoinPage = () => {
                       <FaInfoCircle />
                     </div>
                     <div>
-                      {currencyFormatter.format(getCoin.data.totalSupply)}
+                      {formatCurrency(
+                        'USD',
+                        isMobile ? 'compact' : 'standard'
+                      )(getCoin.data.totalSupply)}
                     </div>
                   </div>
                   <div className='flex flex-row gap-2'>
@@ -198,7 +210,10 @@ const CoinPage = () => {
                       <FaInfoCircle />
                     </div>
                     <div>
-                      {currencyFormatter.format(getCoin.data.circulatingSupply)}
+                      {formatCurrency(
+                        'USD',
+                        isMobile ? 'compact' : 'standard'
+                      )(getCoin.data.circulatingSupply)}
                     </div>
                   </div>
                 </div>

@@ -6,7 +6,7 @@ type LayoutProps = {
 };
 const Layout = (props: LayoutProps) => {
   return (
-    <div className='flex min-h-screen w-auto flex-col [&>*]:px-4 [&>*]:lg:px-24'>
+    <div className='flex min-h-screen w-auto flex-col text-sm md:text-base [&>*]:px-4 [&>*]:lg:px-24'>
       <Navbar />
       <div className='p-2'></div>
       {props.children}

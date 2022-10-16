@@ -37,8 +37,8 @@ const ExchangeList = ({ showAll = true }: ExchangeListProps) => {
   }, [pageNumber, totalNumber, showAll, exchanges]);
 
   return (
-    <div>
-      <table className='table min-w-full table-auto bg-white text-center  text-gray-800'>
+    <div className='w-full'>
+      <table className='table w-full min-w-full table-auto bg-white text-center text-gray-800'>
         <thead className='bg-gray-20 border-b border-t'>
           <tr className='[&>th]:px-2 [&>th]:py-1'>
             <th>#</th>

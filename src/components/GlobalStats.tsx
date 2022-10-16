@@ -9,13 +9,15 @@ import {
   FaChartLine,
 } from 'react-icons/fa';
 import {
-  currencyFormatter,
+  formatCurrency,
   formatPercentage,
   numberFormatter,
 } from '@/utils/format';
+import useIsMobile from 'src/hooks/useIsMobile';
 
 const GlobalStats = () => {
   const globalStats = trpc.crypto.globalStats.useQuery();
+  const isMobile = useIsMobile();
   return (
     <>
       <h2 className='py-3 text-xl font-bold'>Crypto stats</h2>
@@ -49,7 +51,10 @@ const GlobalStats = () => {
               <FaChartBar className='h-6 w-6 text-orange-500' />
             </div>
             <p className='text-lg text-gray-700'>
-              {currencyFormatter.format(globalStats.data?.totalVolume || 0)}
+              {formatCurrency(
+                'USD',
+                isMobile ? 'compact' : 'standard'
+              )(globalStats.data?.totalVolume || 0)}
             </p>
           </div>
           <div className='rounded border px-8 py-4 shadow-sm'>
@@ -58,7 +63,10 @@ const GlobalStats = () => {
               <FaChartArea className='h-6 w-6 text-red-500' />
             </div>
             <p className='text-lg text-gray-700'>
-              {currencyFormatter.format(globalStats.data?.totalMarketCap || 0)}
+              {formatCurrency(
+                'USD',
+                isMobile ? 'compact' : 'standard'
+              )(globalStats.data?.totalMarketCap || 0)}
             </p>
           </div>
           <div className='rounded border px-8 py-4 shadow-sm'>

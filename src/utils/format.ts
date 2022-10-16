@@ -1,8 +1,3 @@
-export const currencyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
-
 export const numberFormatter = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
   maximumSignificantDigits: 2,
@@ -13,9 +8,10 @@ export const formatPercentage = (amount: number): string => {
 };
 
 export const formatCurrency =
-  (currency: string) =>
+  (currency: string, notation: 'compact' | 'standard') =>
   (amount: number): string =>
     Intl.NumberFormat('en-US', {
+      notation: notation,
       style: 'currency',
       currency: currency,
     }).format(amount);

@@ -8,6 +8,7 @@ import {
 import { CrosshairMoveData } from './types';
 import { formatCurrency } from '@/utils/format';
 import { Tooltip } from './ChartTooltip';
+import useIsMobile from 'src/hooks/useIsMobile';
 
 type CrosshairDataUpdate = {
   volumes: any[];
@@ -87,6 +88,7 @@ type CoinChartProps = {
 };
 
 const PriceChart = (props: CoinChartProps) => {
+  const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const seriesRef = useRef<ISeriesApi<'Baseline'> | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
@@ -117,7 +119,19 @@ const PriceChart = (props: CoinChartProps) => {
       date: date ?? '',
     }));
   };
-
+  useLayoutEffect(() => {
+    if (!chartRef.current) {
+      return;
+    }
+    chartRef.current?.applyOptions({
+      localization: {
+        priceFormatter: formatCurrency(
+          'USD',
+          isMobile ? 'compact' : 'standard'
+        ),
+      },
+    });
+  }, [isMobile]);
   useLayoutEffect(() => {
     if (!containerRef.current) {
       return;
@@ -135,9 +149,6 @@ const PriceChart = (props: CoinChartProps) => {
       },
       width: containerRef.current.clientWidth,
       height: 500,
-      localization: {
-        priceFormatter: formatCurrency('USD'),
-      },
       timeScale: {
         timeVisible: true,
         tickMarkFormatter: (time: number, markType: number) => {
