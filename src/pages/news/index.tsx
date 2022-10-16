@@ -6,6 +6,7 @@ const NewsPage = () => {
   return (
     <Layout>
       <div className='mb-24'>
+        <h2 className='mb-3 text-xl font-bold'>Latest News</h2>
         <NewsList showAll={true} />
       </div>
     </Layout>

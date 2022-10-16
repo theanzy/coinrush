@@ -33,7 +33,6 @@ const NewsList = ({ showAll = false }: NewsListProps) => {
 
   return (
     <>
-      <h2 className='mb-3 text-xl font-bold'>Latest News</h2>
       {news && (
         <div className='flex flex-col gap-10'>
           {news[pageNumber]?.map((news, i) => (

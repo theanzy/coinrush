@@ -4,6 +4,7 @@ import CoinList from '@/components/CoinList';
 import NewsList from '@/components/NewsList';
 import ExchangeList from '@/components/ExchangeList';
 import Layout from '@/components/Layout';
+import Link from 'next/link';
 
 const Home: NextPage = () => {
   return (
@@ -12,14 +13,28 @@ const Home: NextPage = () => {
         <main className='flex w-full flex-col'>
           <GlobalStats />
           <section className='py-8'>
-            <h2 className='mb-3 text-lg font-bold'>Cryptocurrency prices</h2>
+            <Link href='/coins'>
+              <h2 className='mb-3 cursor-pointer text-lg font-bold hover:text-blue-600'>
+                Cryptocurrency prices
+              </h2>
+            </Link>
             <CoinList showAll={false} />
           </section>
           <section className='py-8'>
-            <h2 className='mb-3 text-lg font-bold'>Exchanges</h2>
+            <Link href='/exchanges'>
+              <h2 className='mb-3 cursor-pointer text-lg font-bold hover:text-blue-600'>
+                Exchanges
+              </h2>
+            </Link>
             <ExchangeList showAll={false} />
           </section>
           <section className='py-8'>
+            <Link href='/news'>
+              <h2 className='mb-5 cursor-pointer text-xl font-bold hover:text-blue-600'>
+                Latest News
+              </h2>
+            </Link>
+
             <NewsList showAll={false} />
           </section>
         </main>
