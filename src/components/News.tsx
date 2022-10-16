@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-
+import moment from 'moment';
 type News = {
   title: string;
   url: string;
@@ -14,6 +14,16 @@ type NewsProps = {
   news: News;
 };
 
+const hoursFromNow = (timestamp: string) => {
+  const time = moment(timestamp);
+  const now = moment();
+  const diff = now.diff(time, 'hours');
+  console.log(diff);
+  if (diff >= 12) {
+    return time.calendar(now);
+  }
+  return time.fromNow();
+};
 const News = ({ news }: NewsProps) => {
   return (
     <div className='flex flex-row gap-5'>
@@ -46,7 +56,7 @@ const News = ({ news }: NewsProps) => {
         </div>
         <div className='flex flex-row gap-5 text-sm text-gray-500'>
           <div>{news.source}</div>
-          <div>{news.publishedAt}</div>
+          <div>{hoursFromNow(news.publishedAt)}</div>
         </div>
       </div>
     </div>
