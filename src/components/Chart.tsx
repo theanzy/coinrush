@@ -43,10 +43,10 @@ const handleCrosshairMove =
       const price = param.seriesPrices.get(series);
       const volume = volumes.find((x) => x.time === param.time);
       const toolTipHeight = 500;
-      const toolTipWidth = 300;
+      const toolTipWidth = 220;
       const toolTipMargin = 15;
       const coordinate = series.priceToCoordinate(price);
-      let shiftedCoordinate = param.point.x - 50;
+      let shiftedCoordinate = param.point.x - toolTipWidth;
       if (coordinate === null) {
         return;
       }
