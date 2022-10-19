@@ -29,16 +29,17 @@ export const cryptoRouter = t.router({
     };
   }),
   coins: t.procedure
-    .input(z.object({ pageNumber: z.number() }))
+    .input(z.object({ pageNumber: z.number(), limit: z.number().nullish() }))
     .mutation(async ({ input }) => {
-      const getCoins = async (pageNumber: number) => {
+      const getCoins = async (pageNumber: number, limit: number) => {
         const response = await axios.get(
-          `${COIN_API_URL}/coins/markets?vs_currency=usd&per_page=30&page=${pageNumber}`
+          `${COIN_API_URL}/coins/markets?vs_currency=usd&per_page=${limit}&page=${pageNumber}`
         );
         return response.data;
       };
       const result: AsyncReturnType<typeof getCoins> = await getCoins(
-        input.pageNumber
+        input.pageNumber,
+        input.limit ?? 10
       );
 
       const data = result.map(

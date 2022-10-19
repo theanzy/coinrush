@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import CoinTableRow from './CoinTableRow';
 import InfinityScroller from '@/components/InfinityScroller';
 import Spinner from './Spinner';
+import { Coin } from '@/data/Coin';
 
 type CoinListProps = {
   showAll?: boolean;
 };
-const RowHeight = 60;
+const RowHeight = 70;
 const CoinList = ({ showAll = true }: CoinListProps) => {
   const getCoins = trpc.crypto.coins.useMutation();
   type Coins = typeof getCoins.data;
@@ -23,21 +24,21 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
   };
   const RowTemplate = (props: {
     index: number;
-    style: object;
+    style?: object;
   }): JSX.Element => {
     const { index, style } = props;
     const coin = coins[index];
     return isItemLoaded(index) ? (
       <div
         style={style}
-        className='flex flex-row items-center'
+        className='grid grid-cols-[3%_27%_17%_18%_18%_16%_1%] border-b [&>div]:flex [&>div]:flex-row [&>div]:items-center'
       >
         <CoinTableRow coin={coin} />
       </div>
     ) : (
       <div
         style={style}
-        className='flex flex-row justify-center'
+        className='flex flex-row justify-center py-2'
       >
         <Spinner />
       </div>
@@ -66,23 +67,35 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
 
   return (
     <>
-      <div className='flex flex-row items-center'>
-        <div className='hidden md:block'>#</div>
-        <div className='text-left'>Name</div>
-        <div className='text-right'>Price (USD)</div>
-        <div className='text-right'>24h Change (%)</div>
-        <div className='text-right'>24h Volume (USD)</div>
-        <div className='text-right'>Market Cap (USD)</div>
+      <div className='grid grid-cols-[3%_27%_17%_18%_18%_16%_1%] py-2 font-bold [&>div]:flex [&>div]:flex-row [&>div]:items-center'>
+        <div className='md:block'>#</div>
+        <div>Name</div>
+        <div>Price (USD)</div>
+        <div className='justify-self-end text-right'>24h Change (%)</div>
+        <div className='justify-self-end text-right'>24h Volume (USD)</div>
+        <div className='justify-self-end text-right'>Market Cap (USD)</div>
       </div>
-      <div className={`h-[${RowHeight * 10}px] `}>
-        <InfinityScroller
-          itemCount={itemCount}
-          isItemLoaded={isItemLoaded}
-          itemSize={RowHeight}
-          loadMoreItems={loadMoreItems}
-          rowTemplate={RowTemplate}
-        />
-      </div>
+      {showAll ? (
+        <div className={`${coins.length === 0 ? 'h-[70px]' : 'h-[700px]'}`}>
+          <InfinityScroller
+            itemCount={itemCount}
+            isItemLoaded={isItemLoaded}
+            itemSize={RowHeight}
+            loadMoreItems={loadMoreItems}
+            rowTemplate={RowTemplate}
+          />
+        </div>
+      ) : (
+        <>
+          {coins.map((c: Coin, i: number) => (
+            <RowTemplate
+              key={c.name}
+              index={i}
+              style={{ height: RowHeight }}
+            />
+          ))}
+        </>
+      )}
     </>
   );
 };
