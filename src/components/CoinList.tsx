@@ -1,26 +1,57 @@
 import { trpc } from '@/utils/trpc';
-import React, { useCallback, useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import CoinTableRow from './CoinTableRow';
+import InfinityScroller from '@/components/InfinityScroller';
 import Spinner from './Spinner';
 
 type CoinListProps = {
   showAll?: boolean;
 };
-
+const RowHeight = 60;
 const CoinList = ({ showAll = true }: CoinListProps) => {
-  const observer = useRef<IntersectionObserver>();
-  const [pageNumber, setPageNumber] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [coins, setCoins] = useState<any[]>([]);
   const getCoins = trpc.crypto.coins.useMutation();
+  type Coins = typeof getCoins.data;
+  const [coins, setCoins] = useState<Coins>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const itemCount = hasMore ? coins.length + 1 : coins.length;
+  const isItemLoaded = (index: number) => !hasMore || index < coins.length;
+  const loadMoreItems = async (startIndex: number, stopIndex: number) => {
+    if (!getCoins.isLoading && hasMore) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+  const RowTemplate = (props: {
+    index: number;
+    style: object;
+  }): JSX.Element => {
+    const { index, style } = props;
+    const coin = coins[index];
+    return isItemLoaded(index) ? (
+      <div
+        style={style}
+        className='flex flex-row items-center'
+      >
+        <CoinTableRow coin={coin} />
+      </div>
+    ) : (
+      <div
+        style={style}
+        className='flex flex-row justify-center'
+      >
+        <Spinner />
+      </div>
+    );
+  };
+
   useEffect(() => {
-    if (pageNumber > 1 && !showAll) {
+    if (currentPage > 1 && !showAll) {
       return;
     }
     if (!getCoins.isLoading && hasMore) {
-      getCoins.mutate({ pageNumber });
+      getCoins.mutate({ pageNumber: currentPage });
     }
-  }, [pageNumber]);
+  }, [currentPage]);
   useEffect(() => {
     if (getCoins.isLoading || !getCoins.data) {
       return;
@@ -33,62 +64,26 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
     }
   }, [getCoins.data, showAll]);
 
-  const lastRowRef = useCallback(
-    (node: HTMLTableRowElement) => {
-      if (getCoins.isLoading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0]?.isIntersecting && hasMore) {
-          setPageNumber((prev) => prev + 1);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [getCoins.isLoading, hasMore]
-  );
   return (
-    <div>
-      <table className='table w-full max-w-full table-auto bg-white text-center text-gray-800'>
-        <thead className='bg-gray-20 border-b border-t'>
-          <tr className='[&>th]:px-2 [&>th]:py-2'>
-            <th className='hidden md:block'>#</th>
-            <th className='text-left'>Name</th>
-            <th className='text-right'>Price (USD)</th>
-            <th className='text-right'>24h Change (%)</th>
-            <th className='text-right'>24h Volume (USD)</th>
-            <th className='text-right'>Market Cap (USD)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(showAll ? coins : coins.slice(0, 10)).map((coin, i) => {
-            if (coins.length === i + 1) {
-              return (
-                <tr
-                  ref={lastRowRef}
-                  key={coin.id}
-                  className='border-b bg-white text-gray-800 [&>td]:py-3 [&>td]:px-2'
-                >
-                  <CoinTableRow coin={coin} />
-                </tr>
-              );
-            }
-            return (
-              <tr
-                key={coin.id}
-                className='border-b bg-white text-gray-800 [&>td]:py-3 [&>td]:px-2'
-              >
-                <CoinTableRow coin={coin} />
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      {getCoins.isLoading && (
-        <div className='flex flex-row items-center justify-center p-10'>
-          <Spinner />
-        </div>
-      )}
-    </div>
+    <>
+      <div className='flex flex-row items-center'>
+        <div className='hidden md:block'>#</div>
+        <div className='text-left'>Name</div>
+        <div className='text-right'>Price (USD)</div>
+        <div className='text-right'>24h Change (%)</div>
+        <div className='text-right'>24h Volume (USD)</div>
+        <div className='text-right'>Market Cap (USD)</div>
+      </div>
+      <div className={`h-[${RowHeight * 10}px] `}>
+        <InfinityScroller
+          itemCount={itemCount}
+          isItemLoaded={isItemLoaded}
+          itemSize={RowHeight}
+          loadMoreItems={loadMoreItems}
+          rowTemplate={RowTemplate}
+        />
+      </div>
+    </>
   );
 };
 

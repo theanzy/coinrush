@@ -13,11 +13,11 @@ const CoinTableRow = ({ coin }: CoinTableRowProps) => {
   const isMobile = useIsMobile();
   return (
     <>
-      <td className='hidden md:block'>{coin.rank}</td>
-      <td>
+      <div className='hidden md:block'>{coin.rank}</div>
+      <div>
         <div className='flex'>
           <Link href={`/coins/${coin.id}`}>
-            <div className='relative flex w-5  items-center justify-center hover:cursor-pointer md:w-12'>
+            <div className='relative flex w-5 items-center justify-center hover:cursor-pointer md:w-12'>
               <Image
                 className='cursor-pointer'
                 src={coin.imageUrl || '/defaultCoin.png'}
@@ -36,23 +36,23 @@ const CoinTableRow = ({ coin }: CoinTableRowProps) => {
             </div>
           </div>
         </div>
-      </td>
-      <td className='text-right'>
+      </div>
+      <div className='text-right'>
         {formatCurrency('USD', isMobile ? 'compact' : 'standard')(coin.price)}
-      </td>
-      <td
+      </div>
+      <div
         className={`text-right ${
           coin.percentChange24h < 0 ? 'text-red-600' : 'text-green-600'
         }`}
       >
         {formatPercentage(coin.percentChange24h)}
-      </td>
-      <td className='text-right'>
+      </div>
+      <div className='text-right'>
         {formatCurrency('USD', isMobile ? 'compact' : 'standard')(coin.price)}
-      </td>
-      <td className='text-right'>
+      </div>
+      <div className='text-right'>
         {formatCurrency('USD', isMobile ? 'compact' : 'standard')(coin.price)}
-      </td>
+      </div>
     </>
   );
 };
