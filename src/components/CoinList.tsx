@@ -31,7 +31,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
     return isItemLoaded(index) ? (
       <div
         style={style}
-        className='grid grid-cols-[3%_27%_17%_18%_18%_16%_1%] border-b [&>div]:flex [&>div]:flex-row [&>div]:items-center'
+        className='grid min-w-[500px] grid-cols-[8%_22%_17%_18%_18%_16%_1%] border-b md:grid-cols-[4%_26%_17%_18%_18%_16%_1%] [&>div]:flex [&>div]:flex-row [&>div]:items-center'
       >
         <CoinTableRow coin={coin} />
       </div>
@@ -66,9 +66,9 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
   }, [getCoins.data, showAll]);
 
   return (
-    <>
-      <div className='grid grid-cols-[3%_27%_17%_18%_18%_16%_1%] py-2 font-bold [&>div]:flex [&>div]:flex-row [&>div]:items-center'>
-        <div className='md:block'>#</div>
+    <div className=' overflow-x-auto'>
+      <div className='grid min-w-[500px] grid-cols-[8%_22%_17%_18%_18%_16%_1%] py-2 font-bold md:grid-cols-[4%_26%_17%_18%_18%_16%_1%] [&>div]:flex [&>div]:flex-row [&>div]:items-center '>
+        <div>#</div>
         <div>Name</div>
         <div>Price (USD)</div>
         <div className='justify-self-end text-right'>24h Change (%)</div>
@@ -96,7 +96,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
           ))}
         </>
       )}
-    </>
+    </div>
   );
 };
 
