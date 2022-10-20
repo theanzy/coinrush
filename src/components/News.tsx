@@ -26,12 +26,12 @@ const hoursFromNow = (timestamp: string) => {
 };
 const News = ({ news }: NewsProps) => {
   return (
-    <div className='flex flex-row gap-5'>
+    <div className='flex flex-col gap-5 md:flex-row'>
       <a
         href={news.url}
         rel='noopener noreferrer'
         target='_blank'
-        className='relative h-[150px] basis-1/5 cursor-pointer overflow-hidden rounded-lg'
+        className='relative h-[150px] cursor-pointer overflow-hidden rounded-lg md:basis-1/5'
       >
         <Image
           className='cursor-pointer duration-75 hover:scale-110'
@@ -40,7 +40,7 @@ const News = ({ news }: NewsProps) => {
           layout='fill'
         />
       </a>
-      <div className='flex basis-4/5 flex-col gap-1'>
+      <div className='flex flex-col gap-1 md:basis-4/5'>
         <div className='cursor-pointer text-xl font-bold hover:text-blue-700'>
           <a
             href={news.url}
@@ -50,9 +50,9 @@ const News = ({ news }: NewsProps) => {
             {news.title}
           </a>
         </div>
-        <div>
-          {news.description.slice(0, 300)}
-          {news.description.length > 300 ? '...' : ''}
+        <div className='hidden md:block'>
+          {news.description?.slice(0, 300)}
+          {news.description?.length > 300 ? '...' : ''}
         </div>
         <div className='flex flex-row gap-5 text-sm text-gray-500'>
           <div>{news.source}</div>
