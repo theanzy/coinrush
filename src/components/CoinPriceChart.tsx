@@ -6,6 +6,7 @@ import Spinner from './Spinner';
 type CoinPriceChartProps = {
   coinId: string;
   coinName: string;
+  shortName: string;
 };
 
 const PERIODS: Record<string, Record<string, string>> = {
@@ -17,7 +18,11 @@ const PERIODS: Record<string, Record<string, string>> = {
   Max: { days: 'max', interval: 'monthly' },
 };
 
-const CoinPriceChart = ({ coinId, coinName }: CoinPriceChartProps) => {
+const CoinPriceChart = ({
+  coinId,
+  coinName,
+  shortName,
+}: CoinPriceChartProps) => {
   const [selectedPeriod, setSelectedPeriod] = useState('24h');
   const getMarketChart = trpc.crypto.getMarketChart.useMutation();
   const [localMarketChart, setLocalMarketChart] =
@@ -62,7 +67,7 @@ const CoinPriceChart = ({ coinId, coinName }: CoinPriceChartProps) => {
         <PriceChart
           prices={localMarketChart.prices}
           volumes={localMarketChart.volumes}
-          title={coinId}
+          title={shortName}
         />
       )}
     </>

@@ -81,13 +81,13 @@ interface TooltipData extends Required<CrosshairMoveData> {
   title: string;
 }
 
-type CoinChartProps = {
+type PriceChartProps = {
   prices: { time: number; value: number }[];
   volumes: { time: number; value: number }[];
   title: string;
 };
 
-const PriceChart = (props: CoinChartProps) => {
+const PriceChart = (props: PriceChartProps) => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const seriesRef = useRef<ISeriesApi<'Baseline'> | null>(null);

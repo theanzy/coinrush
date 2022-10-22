@@ -1,3 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.tooltip {
+  position: relative;
+  display: block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: max-content;
+  max-width: 20rem;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 9px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 50%;
+  translate: 0 50%;
+  left: 160%;
+  text-align: left;
+}
+
+.tooltip .tooltiptext::after {
+  content: '';
+  position: absolute;
+
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+  top: 50%;
+  right: 100%;
+  translate: 0 -50%;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+@media only screen and (min-width: 765px) {
+  .tooltip .tooltiptext {
+    bottom: 150%;
+    left: 50%;
+    right: 0;
+
+    translate: -50% 0;
+  }
+  .tooltip .tooltiptext::after {
+    translate: -50% 0;
+    top: 99%;
+    left: 50%;
+    border-color: black transparent transparent transparent;
+  }
+}

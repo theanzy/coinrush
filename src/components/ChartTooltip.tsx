@@ -29,7 +29,6 @@ export const Tooltip = forwardRef(
           border: '1px solid #2962FF',
           borderRadius: '3px',
           background: 'white',
-          fontFamily: 'cursive',
         }}
         ref={ref}
       >
@@ -37,16 +36,15 @@ export const Tooltip = forwardRef(
           style={{
             color: '#2962FF',
             fontWeight: 'bolder',
-            paddingBottom: '5px',
           }}
         >
-          {title}
+          {title.toUpperCase()}
         </div>
-        <div style={{ margin: '4px 0px', color: '#000' }}>
+        <div style={{ color: '#000' }}>
           <span style={{ color: '#777' }}> Price: </span>
           {formatCurrency('USD', isMobile ? 'compact' : 'standard')(price)}
         </div>
-        <div style={{ margin: '4px 0px', color: '#000' }}>
+        <div style={{ color: '#000' }}>
           <span style={{ color: '#777' }}> Volume: </span>
           {formatCurrency('USD', isMobile ? 'compact' : 'standard')(volume)}
         </div>

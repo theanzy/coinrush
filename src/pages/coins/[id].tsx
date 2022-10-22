@@ -145,7 +145,15 @@ const CoinPage = () => {
                 <div>
                   <div className='flex flex-row justify-start gap-1'>
                     <h2 className='text-lg font-bold text-black'>Market Cap</h2>
-                    <FaInfoCircle className=' text-gray-500' />
+                    <div className='tooltip text-md my-auto'>
+                      <FaInfoCircle className=' text-gray-500' />
+                      <span className='tooltiptext text-sm'>
+                        The total market value of a cryptocurrency&apos;s
+                        circulating supply. It is analogous to the free-float
+                        capitalization in the stock market. Market Cap = Current
+                        Price x Circulating Supply.
+                      </span>
+                    </div>
                   </div>
                   <div>
                     {formatCurrency(
@@ -183,7 +191,16 @@ const CoinPage = () => {
                   <div className='flex flex-row gap-2'>
                     <div className='flex flex-row gap-1 text-gray-500'>
                       <h2>Max Supply</h2>
-                      <FaInfoCircle />
+                      <div className='tooltip text-md my-auto'>
+                        <FaInfoCircle className=' text-gray-500' />
+                        <span className='tooltiptext text-sm'>
+                          The maximum amount of coins that will ever exist in
+                          the lifetime of the cryptocurrency. It is analogous to
+                          the fully diluted shares in the stock market. If this
+                          data has not been submitted by the project or verified
+                          by the CMC team, max supply shows - -.
+                        </span>
+                      </div>
                     </div>
                     <div>
                       {formatCurrency(
@@ -195,7 +212,16 @@ const CoinPage = () => {
                   <div className='flex flex-row gap-2'>
                     <div className='flex flex-row items-center gap-1 text-gray-500'>
                       <h2>Total Supply</h2>
-                      <FaInfoCircle />
+                      <div className='tooltip text-md my-auto'>
+                        <FaInfoCircle className=' text-gray-500' />
+                        <span className='tooltiptext text-sm'>
+                          The amount of coins that have been already created,
+                          minus any coins that have been burned. It is analogous
+                          to the outstanding shares in the stock market. If this
+                          data has not been submitted by the project or verified
+                          by the CMC team, total supply shows - -.
+                        </span>
+                      </div>
                     </div>
                     <div>
                       {formatCurrency(
@@ -207,7 +233,14 @@ const CoinPage = () => {
                   <div className='flex flex-row gap-2'>
                     <div className='flex flex-row items-center gap-1 text-gray-500'>
                       <h2>Circulating Supply</h2>
-                      <FaInfoCircle />
+                      <div className='tooltip text-md my-auto'>
+                        <FaInfoCircle className=' text-gray-500' />
+                        <span className='tooltiptext text-sm'>
+                          The amount of coins that are circulating in the market
+                          and are in public hands. It is analogous to the
+                          flowing shares in the stock market.
+                        </span>
+                      </div>
                     </div>
                     <div>
                       {formatCurrency(
@@ -224,6 +257,7 @@ const CoinPage = () => {
             <CoinPriceChart
               coinName={getCoin.data.name}
               coinId={getCoin.data.id}
+              shortName={getCoin.data.shortName}
             />
           </div>
           <div>TODO BTC to USD converter</div>
