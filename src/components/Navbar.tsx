@@ -1,40 +1,49 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import NavSearch from './SearchForm/NavSearch';
-
+import { IoMenuOutline } from 'react-icons/io5';
+import { MdOutlineClose } from 'react-icons/md';
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <nav className='flex w-full min-w-full flex-wrap items-center justify-between border-b bg-white py-4'>
+    <nav className='flex w-full min-w-full items-center border-b bg-white py-4'>
+      <div className='flex-0 block md:hidden'>
+        <button
+          className='borde flex items-center rounded px-3 py-2 text-[1.7rem] text-gray-800 hover:border-white hover:text-blue-500'
+          onClick={() => setShowMenu((prev) => !prev)}
+        >
+          <IoMenuOutline />
+        </button>
+      </div>
       <div className='mr-6 flex flex-shrink-0 items-center text-gray-800'>
         <Link href='/'>
           <a className='text-xl font-bold tracking-tight'>Coinrush</a>
         </Link>
       </div>
-      <div className='block md:hidden'>
-        <button
-          className='flex items-center rounded border border-gray-900 px-3 py-2 text-gray-800 hover:border-white hover:text-blue-500'
-          onClick={() => setShowMenu((prev) => !prev)}
-        >
-          <svg
-            className='h-3 w-3 fill-current'
-            viewBox='0 0 20 20'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <title>Menu</title>
-            <path d='M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z' />
-          </svg>
-        </button>
-      </div>
       <div
         className={`${
-          showMenu ? 'block' : 'hidden'
+          showMenu ? 'fixed top-0 left-0 z-30 h-screen bg-white' : 'hidden'
         } md:items-center' w-full flex-grow md:flex md:w-auto`}
       >
+        {showMenu && (
+          <div className='flex flex-row justify-center pt-4 md:hidden'>
+            <button
+              className='absolute left-0 flex items-center rounded px-3 py-2 text-[1.7rem] text-gray-800 hover:border-white hover:text-blue-500'
+              onClick={() => setShowMenu((prev) => !prev)}
+            >
+              <MdOutlineClose />
+            </button>
+            <div className='mr-6 flex flex-shrink-0 items-center py-2 text-gray-800'>
+              <Link href='/'>
+                <a className='text-xl font-bold tracking-tight'>Coinrush</a>
+              </Link>
+            </div>
+          </div>
+        )}
         <div
-          className='text-md mt-3 flex flex-col gap-5 md:mt-0 md:flex-grow md:flex-row 
-        [&>a]:text-gray-800 hover:[&>a]:text-blue-500 md:[&>a]:mt-0 md:[&>a]:inline-block
-        '
+          className='text-md mt-3 flex flex-col md:mt-0 md:flex-grow md:flex-row [&>a]:py-5 [&>a]:pl-5 [&>a]:text-gray-800
+        hover:[&>a]:bg-blue-500 hover:[&>a]:text-white md:[&>a]:mt-0 md:[&>a]:inline-block hover:[&>a]:md:bg-white hover:md:[&>a]:text-blue-500'
+          onClick={() => setShowMenu(false)}
         >
           <Link href='/'>
             <a>Home</a>
@@ -50,7 +59,9 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-      <NavSearch />
+      <div className='ml-auto'>
+        <NavSearch />
+      </div>
     </nav>
   );
 };
