@@ -9,7 +9,7 @@ import Link from 'next/link';
 const Home: NextPage = () => {
   return (
     <Layout>
-      <div className='flex items-stretch justify-start '>
+      <div className='flex items-stretch justify-start'>
         <main className='flex w-full flex-col'>
           <GlobalStats />
           <section className='py-8'>

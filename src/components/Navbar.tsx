@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
+import NavSearch from './SearchForm/NavSearch';
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -49,6 +50,7 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
+      <NavSearch />
     </nav>
   );
 };
