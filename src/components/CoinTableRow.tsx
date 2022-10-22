@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { formatCurrency, formatPercentage } from '@/utils/format';
 import Link from 'next/link';
 import useIsMobile from 'src/hooks/useIsMobile';
+import { Coin } from '@/types/coin';
 
 type CoinTableRowProps = {
   coin: Coin;
