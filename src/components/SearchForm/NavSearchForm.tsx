@@ -1,13 +1,15 @@
 import React, { useRef } from 'react';
 import { FaSearch } from 'react-icons/fa';
 type NavSearchFormProps = {
-  onSubmit: (text: string) => void;
+  onSubmit?: (text: string) => void;
+  text?: string;
+  onChange?: (text: string) => void;
 };
 const NavSearchForm = (props: NavSearchFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    inputRef.current && props.onSubmit(inputRef.current.value);
+    inputRef.current && props.onSubmit?.(inputRef.current.value);
   };
 
   return (
@@ -22,6 +24,8 @@ const NavSearchForm = (props: NavSearchFormProps) => {
         <FaSearch />
       </button>
       <input
+        value={props.text}
+        onChange={(e) => props.onChange?.(e.target.value)}
         autoFocus={true}
         required
         type='text'

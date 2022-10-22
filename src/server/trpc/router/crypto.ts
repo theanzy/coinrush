@@ -1,9 +1,11 @@
+import { Exchange } from './../../../types/coin';
 import { AsyncReturnType } from '@/utils/tsbs';
 import axios from 'axios';
 import { t } from '../trpc';
 import { z } from 'zod';
 import { COIN_API_URL } from '@/utils/env';
 import { Coin } from '@/types/coin';
+import { formatMissingImageUrl } from '@/utils/format';
 
 export const cryptoRouter = t.router({
   globalStats: t.procedure.query(async () => {
@@ -184,4 +186,32 @@ export const cryptoRouter = t.router({
     }));
     return { coins };
   }),
+  search: t.procedure
+    .input(
+      z.object({
+        searchText: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const res = await axios.get(
+        `${COIN_API_URL}/search?query=${input.searchText}`
+      );
+      const result = res.data;
+      const coins: Coin[] = result.coins.map((coin: any) => ({
+        id: coin.id,
+        name: coin.name,
+        shortName: coin.symbol,
+        rank: coin.market_cap_rank,
+        imageUrl: formatMissingImageUrl(coin.large),
+      }));
+      const exchanges: Exchange[] = result.exchanges.map((exchange: any) => ({
+        id: exchange.id,
+        name: exchange.name,
+        imageUrl: formatMissingImageUrl(exchange.large),
+      }));
+      return {
+        coins,
+        exchanges,
+      };
+    }),
 });

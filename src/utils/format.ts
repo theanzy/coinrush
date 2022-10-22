@@ -23,3 +23,10 @@ export const formatUrl = (url: string): string => {
   }
   return url;
 };
+
+export const formatMissingImageUrl = (url: string): string | undefined => {
+  if (url.match(/^[missing]/g) || url.match(/^http/g) == null) {
+    return undefined;
+  }
+  return url;
+};
