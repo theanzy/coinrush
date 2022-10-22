@@ -3,6 +3,7 @@ import axios from 'axios';
 import { t } from '../trpc';
 import { z } from 'zod';
 import { COIN_API_URL } from '@/utils/env';
+import { Coin } from '@/types/coin';
 
 export const cryptoRouter = t.router({
   globalStats: t.procedure.query(async () => {
@@ -170,4 +171,17 @@ export const cryptoRouter = t.router({
       };
       return response;
     }),
+  trending: t.procedure.query(async () => {
+    const res = await axios.get(`${COIN_API_URL}/search/trending`);
+    const result = res.data;
+    const coins: Coin[] = result.coins?.map((coin: any) => ({
+      name: coin.item.name,
+      id: coin.item.id,
+      shortName: coin.item.symbol,
+      rank: coin.item.market_cap_rank,
+      imageUrl: coin.item.large,
+      priceBTC: coin.item.price_btc,
+    }));
+    return { coins };
+  }),
 });

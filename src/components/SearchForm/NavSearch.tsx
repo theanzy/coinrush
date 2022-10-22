@@ -5,11 +5,14 @@ import useClickOutside from 'src/hooks/useClickOutside';
 import FakeSearchBar from './FakeSearchBar';
 import NavSearchForm from './NavSearchForm';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+import { trpc } from '@/utils/trpc';
+import Link from 'next/link';
 const NavSearch = () => {
   const [openSearchBox, setOpenSearchBox] = useState(false);
   const searchBoxRef = useClickOutside<HTMLDivElement>(() => {
     setOpenSearchBox(false);
   });
+  const getTrending = trpc.crypto.trending.useQuery();
   return (
     <div className='flex flex-row items-center gap-2 pr-5'>
       <div className='relative flex flex-row'>
@@ -45,27 +48,36 @@ const NavSearch = () => {
                   Trending🔥
                 </h1>
                 <ul className='flex flex-col'>
-                  {trendings.coins.map((coin) => (
-                    <div
-                      key={coin.id}
-                      className='flex cursor-pointer select-none flex-row items-center justify-between rounded-md border-none px-3 py-2 hover:bg-gray-100'
-                    >
-                      <div className='flex flex-1 flex-row items-center gap-3'>
-                        <Image
-                          src={coin.imageUrl}
-                          alt={coin.name}
-                          height={20}
-                          width={20}
-                        />
-                        <div>
-                          {coin.name} ({coin.symbol})
-                        </div>
-                      </div>
-                      <div className='text-gray-500'>
-                        {coin.rank && `#${coin.rank}`}
-                      </div>
-                    </div>
-                  ))}
+                  {getTrending.data &&
+                    getTrending.data.coins.map((coin) => (
+                      <Link
+                        key={coin.id}
+                        href={`/coins/${coin.id}`}
+                      >
+                        <a
+                          className='flex cursor-pointer select-none flex-row items-center justify-between rounded-md border-none px-3 py-2 hover:bg-gray-100'
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenSearchBox(false);
+                          }}
+                        >
+                          <div className='flex flex-1 flex-row items-center gap-3'>
+                            <Image
+                              src={coin.imageUrl as string}
+                              alt={coin.name}
+                              height={20}
+                              width={20}
+                            />
+                            <div>
+                              {coin.name} ({coin.shortName})
+                            </div>
+                          </div>
+                          <div className='text-gray-500'>
+                            {coin.rank && `#${coin.rank}`}
+                          </div>
+                        </a>
+                      </Link>
+                    ))}
                 </ul>
               </div>
               <div>
