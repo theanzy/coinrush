@@ -15,60 +15,46 @@ const NavSearch = () => {
   const [openSearchBox, setOpenSearchBox] = useState(false);
   const [searchText, setSearchText] = useState<string>('');
   const debouncedSearchText = useDebounce<string>(searchText, 500);
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [searchCoinError, setSearchCoinError] = useState('');
-  const [exchanges, setExchanges] = useState<Exchange[]>([]);
 
   useEffect(() => {
     if (debouncedSearchText.trim().length === 0) {
       return;
     }
-    searchCrypto
-      .mutateAsync({ searchText: debouncedSearchText })
-      .then((result) => {
-        if (result.coins.length > 0) {
-          setCoins(result.coins);
-          setSearchCoinError('');
-        } else {
-          setSearchCoinError('No result');
-          setCoins([]);
-        }
-        setExchanges(result.exchanges);
-      });
+    searchCrypto.mutate({ searchText: debouncedSearchText });
   }, [debouncedSearchText]);
 
   const filteredCoins = useMemo<Coin[]>(() => {
-    if (
-      debouncedSearchText.trim().length === 0 ||
-      searchText.trim().length === 0
-    ) {
+    if (debouncedSearchText.trim().length === 0 || searchCrypto.isLoading) {
       return [];
     }
-    return coins;
-  }, [debouncedSearchText, searchText, coins]);
+    return searchCrypto.data?.coins || [];
+  }, [debouncedSearchText, searchCrypto.data?.coins, searchCrypto.isLoading]);
 
   const filteredExchanges = useMemo<Exchange[]>(() => {
-    if (
-      debouncedSearchText.trim().length === 0 ||
-      searchText.trim().length === 0
-    ) {
+    if (debouncedSearchText.trim().length === 0 || searchCrypto.isLoading) {
       return [];
     }
-    return exchanges;
-  }, [searchText, debouncedSearchText, exchanges]);
+    return searchCrypto.data?.exchanges || [];
+  }, [
+    debouncedSearchText,
+    searchCrypto.data?.exchanges,
+    searchCrypto.isLoading,
+  ]);
 
   const filteredTrendingCoins = useMemo<Coin[]>(() => {
-    if (
-      coins.length > 0 &&
-      exchanges.length > 0 &&
-      searchText.trim().length > 0
-    ) {
-      return [];
-    } else if (searchText.trim().length > 0) {
+    if (searchText.trim().length > 0) {
       return [];
     }
     return getTrending.data?.coins ?? [];
-  }, [searchText, coins, exchanges, getTrending.data?.coins]);
+  }, [searchText, getTrending.data?.coins]);
+
+  const errorMessage =
+    searchText.length > 0 &&
+    !searchCrypto.isLoading &&
+    searchCrypto.data?.coins.length === 0 &&
+    searchCrypto.data?.exchanges.length === 0
+      ? `No result for ${searchText}`
+      : '';
 
   const searchBoxRef = useClickOutside<HTMLDivElement>(() => {
     setOpenSearchBox(false);
@@ -102,6 +88,11 @@ const NavSearch = () => {
               </button>
             </div>
             <div className='scrollbar flex flex-col gap-4 overflow-y-auto text-sm text-gray-600'>
+              {errorMessage.length > 0 && (
+                <h1 className='mb-1 px-10 pb-1 text-sm text-gray-500'>
+                  {errorMessage}
+                </h1>
+              )}
               {filteredTrendingCoins.length > 0 && (
                 <div>
                   <h1 className='mb-1 border-b px-3 pb-1 text-sm text-gray-500'>
@@ -120,16 +111,12 @@ const NavSearch = () => {
                   </ul>
                 </div>
               )}
-              {(filteredCoins.length > 0 || searchCoinError.length > 0) && (
+              {filteredCoins.length > 0 && (
                 <div>
                   <h1 className='mb-1 border-b px-3 pb-1 text-sm text-gray-500'>
                     Coins
                   </h1>
-                  {searchCoinError.length > 0 && (
-                    <h1 className='mb-1  px-10 pb-1 text-sm text-gray-500'>
-                      {searchCoinError}
-                    </h1>
-                  )}
+
                   <ul className='flex flex-col'>
                     {filteredCoins.map((coin) => (
                       <CoinListItem
