@@ -92,7 +92,7 @@ const NavSearch = () => {
                 onChange={(text) => setSearchText(text)}
               />
               <button
-                className='z-20 px-3 py-2 text-[1.25rem] text-gray-400 hover:text-gray-600'
+                className='z-20 px-3 py-2 text-[1.6rem] text-gray-400 hover:text-gray-600'
                 type='button'
                 onClick={() => {
                   setOpenSearchBox(false);
