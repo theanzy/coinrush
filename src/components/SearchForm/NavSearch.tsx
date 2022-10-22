@@ -1,12 +1,9 @@
-import { searchData } from '@/data/Search';
-import Image from 'next/image';
 import React, { useEffect, useMemo, useState } from 'react';
 import useClickOutside from 'src/hooks/useClickOutside';
 import FakeSearchBar from './FakeSearchBar';
 import NavSearchForm from './NavSearchForm';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import { trpc } from '@/utils/trpc';
-import Link from 'next/link';
 import { Coin, Exchange } from '@/types/coin';
 import { useDebounce } from 'src/hooks/useDebounce';
 import CoinListItem from '../CoinListItem';

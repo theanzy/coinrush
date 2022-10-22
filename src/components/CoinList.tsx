@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import CoinTableRow from './CoinTableRow';
 import InfinityScroller from '@/components/InfinityScroller';
 import Spinner from './Spinner';
-import { Coin } from '@/data/Coin';
 
 type CoinListProps = {
   showAll?: boolean;

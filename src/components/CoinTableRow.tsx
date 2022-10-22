@@ -1,5 +1,4 @@
 import React from 'react';
-import { Coin } from '@/data/Coin';
 import Image from 'next/image';
 import { formatCurrency, formatPercentage } from '@/utils/format';
 import Link from 'next/link';
