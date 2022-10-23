@@ -26,9 +26,9 @@ export const Tooltip = forwardRef(
           left: left ?? '12px',
           pointerEvents: 'none',
           color: 'black',
-          border: '1px solid #2962FF',
           borderRadius: '3px',
           background: 'white',
+          boxShadow: '-1px 1px 6px 2px rgba(0, 0, 0, .2)',
         }}
         ref={ref}
       >

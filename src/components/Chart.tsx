@@ -13,6 +13,7 @@ import useIsMobile from 'src/hooks/useIsMobile';
 type CrosshairDataUpdate = {
   volumes: any[];
   container: HTMLElement;
+  tooltip: HTMLDivElement | null;
   series: ISeriesApi<'Baseline'>;
   onCrosshairData: (arg: CrosshairMoveData) => void;
 };
@@ -26,7 +27,13 @@ const COLORS = {
 };
 
 const handleCrosshairMove =
-  ({ volumes, container, series, onCrosshairData }: CrosshairDataUpdate) =>
+  ({
+    volumes,
+    container,
+    series,
+    tooltip,
+    onCrosshairData,
+  }: CrosshairDataUpdate) =>
   (param: any) => {
     if (
       param.point === undefined ||
@@ -37,32 +44,33 @@ const handleCrosshairMove =
       param.point.y > container.clientHeight
     ) {
       onCrosshairData({ shown: false });
-    } else {
+    } else if (tooltip) {
       const timestamp = param.time * 1000;
       const dateStr = new Date(timestamp).toUTCString();
       const price = param.seriesPrices.get(series);
       const volume = volumes.find((x) => x.time === param.time);
-      const toolTipHeight = 500;
-      const toolTipWidth = 220;
-      const toolTipMargin = 15;
+      const toolTipHeight = tooltip.clientHeight;
+      const toolTipWidth = tooltip.clientWidth;
+      const toolTipMarginY = 10;
+      const toolTipMarginX = 10;
       const coordinate = series.priceToCoordinate(price);
-      let shiftedCoordinate = param.point.x - toolTipWidth;
+      let shiftedX = param.point.x - toolTipWidth;
       if (coordinate === null) {
         return;
       }
-      shiftedCoordinate = Math.max(
-        0,
-        Math.min(container.clientWidth - toolTipWidth, shiftedCoordinate)
-      );
-
+      if (shiftedX < 0) {
+        shiftedX = param.point.x + toolTipMarginX;
+      } else {
+        shiftedX -= toolTipMarginX;
+      }
       const coordinateY =
-        coordinate - toolTipHeight - toolTipMargin > 0
-          ? coordinate - toolTipHeight - toolTipMargin
+        coordinate - toolTipHeight - toolTipMarginY > 0
+          ? coordinate - toolTipHeight - toolTipMarginY
           : Math.max(
               0,
               Math.min(
-                container.clientHeight - toolTipHeight - toolTipMargin,
-                coordinate + toolTipMargin
+                container.clientHeight - toolTipHeight - toolTipMarginY,
+                coordinate + toolTipMarginY
               )
             );
 
@@ -71,7 +79,7 @@ const handleCrosshairMove =
         price,
         volume: volume.value,
         top: coordinateY,
-        left: shiftedCoordinate,
+        left: shiftedX,
         date: dateStr,
       });
     }
@@ -90,6 +98,7 @@ type PriceChartProps = {
 const PriceChart = (props: PriceChartProps) => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
   const seriesRef = useRef<ISeriesApi<'Baseline'> | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const [tooltipData, setTooltipData] = useState<TooltipData>({
@@ -208,6 +217,7 @@ const PriceChart = (props: PriceChartProps) => {
       volumes: props.volumes,
       container: containerRef.current,
       series: seriesRef.current,
+      tooltip: tooltipRef.current,
       onCrosshairData: handleCrosshairData,
     });
     chartRef.current.unsubscribeCrosshairMove(crosshairmoveHandler);
@@ -235,6 +245,7 @@ const PriceChart = (props: PriceChartProps) => {
       }}
     >
       <Tooltip
+        ref={tooltipRef}
         shown={tooltipData.shown}
         date={tooltipData.date}
         title={tooltipData.title}
