@@ -31,7 +31,7 @@ const News = ({ news }: NewsProps) => {
         href={news.url}
         rel='noopener noreferrer'
         target='_blank'
-        className='relative h-[150px] cursor-pointer overflow-hidden rounded-lg md:basis-1/5'
+        className='relative h-[270px] cursor-pointer overflow-hidden rounded-lg md:h-[150px] md:basis-1/5'
       >
         <Image
           className='cursor-pointer duration-75 hover:scale-110'
