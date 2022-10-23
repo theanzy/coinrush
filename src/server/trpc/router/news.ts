@@ -1,3 +1,4 @@
+import { REMOTE_IMAGE_FECTH_URL } from './../../../utils/env';
 import axios from 'axios';
 import { t } from '../trpc';
 import { z } from 'zod';
@@ -16,11 +17,16 @@ export const newsRouter = t.router({
         pageNumber: z.number(),
         perPage: z.number().optional().default(30),
         fromDate: z.date().optional().default(getPreviousDay(3)),
+        searchText: z.string().nullish(),
       })
     )
     .mutation(async ({ input }) => {
+      let queryString = 'crypto AND blockchain';
+      if (input.searchText && input.searchText.trim().length > 0) {
+        queryString = `${queryString} AND ${input.searchText}`;
+      }
       const res = await axios.get(
-        `${NEWS_API_URL}/everything?q=crypto AND blockchain&from=${input.fromDate
+        `${NEWS_API_URL}/everything?q=${queryString}&from=${input.fromDate
           .getDate()
           .toLocaleString(
             'en-US'
@@ -38,12 +44,14 @@ export const newsRouter = t.router({
           urlToImage: string;
           publishedAt: string;
         }) => {
+          //res.cloudinary.com/<your Cloudinary account's cloud name>/image/fetch/
+
           return {
             source: item.source.name ?? 'Unknown',
             title: item.title,
             description: item.description,
             url: item.url,
-            urlToImage: item.urlToImage,
+            urlToImage: `${REMOTE_IMAGE_FECTH_URL}/${item.urlToImage}`,
             publishedAt: item.publishedAt,
           };
         }

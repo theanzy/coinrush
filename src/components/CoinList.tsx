@@ -60,7 +60,6 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
     if (getCoins.data.length > 0) {
       setCoins((prev: any[]) => [...prev, ...getCoins.data]);
     } else {
-      console.log('set has more');
       setHasMore(false);
     }
   }, [getCoins.data, showAll]);

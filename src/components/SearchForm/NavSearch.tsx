@@ -60,8 +60,8 @@ const NavSearch = () => {
     setOpenSearchBox(false);
   });
   return (
-    <div className='flex flex-row items-center gap-2 pr-5'>
-      <div className='relative flex flex-row'>
+    <div className='flex flex-row items-center gap-2'>
+      <div className='relative flex flex-row '>
         <FakeSearchBar
           onClick={() => {
             setOpenSearchBox(true);

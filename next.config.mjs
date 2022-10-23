@@ -22,13 +22,7 @@ export default defineNextConfig({
     defaultLocale: 'en',
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
-    domains: ['assets.coingecko.com'],
+    domains: ['assets.coingecko.com', 'res.cloudinary.com'],
     formats: ['image/webp'],
   },
 });

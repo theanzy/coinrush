@@ -18,7 +18,6 @@ const hoursFromNow = (timestamp: string) => {
   const time = moment(timestamp);
   const now = moment();
   const diff = now.diff(time, 'hours');
-  console.log(diff);
   if (diff >= 12) {
     return time.calendar(now);
   }
