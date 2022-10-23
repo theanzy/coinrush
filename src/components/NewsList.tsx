@@ -16,12 +16,15 @@ const NewsList = ({ showAll = false }: NewsListProps) => {
   const [news, setNews] = useState<Record<number, News[]>>();
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
+    console.log('fetch again');
     if (news && news[pageNumber]) {
       return;
     }
     if (getNews.isLoading) {
       return;
     }
+    console.log('fetch again', getNews.isLoading);
+
     getNews
       .mutateAsync({
         pageNumber: pageNumber,
@@ -34,8 +37,11 @@ const NewsList = ({ showAll = false }: NewsListProps) => {
           ...prev,
           [pageNumber]: response.data,
         }));
+      })
+      .catch((e) => {
+        console.log(e);
       });
-  }, [pageNumber, totalNumber, showAll, news, getNews.isLoading]);
+  }, [pageNumber, totalNumber, showAll, news]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
