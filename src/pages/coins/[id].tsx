@@ -260,7 +260,7 @@ const CoinPage = () => {
               shortName={getCoin.data.shortName}
             />
           </div>
-          <div>TODO BTC to USD converter</div>
+          <div className='p-2'></div>
           {getCoin.data.description.length > 0 && (
             <div>
               <h3 className='text-2xl font-bold'>

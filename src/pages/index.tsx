@@ -14,7 +14,7 @@ const Home: NextPage = () => {
           <GlobalStats />
           <section className='py-8'>
             <Link href='/coins'>
-              <h2 className='mb-3 cursor-pointer text-lg font-bold hover:text-blue-600'>
+              <h2 className='mb-3 w-fit cursor-pointer text-lg font-bold hover:text-blue-600'>
                 Cryptocurrency prices
               </h2>
             </Link>
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
           </section>
           <section className='py-8'>
             <Link href='/exchanges'>
-              <h2 className='mb-3 cursor-pointer text-lg font-bold hover:text-blue-600'>
+              <h2 className='mb-3 w-fit cursor-pointer text-lg font-bold hover:text-blue-600'>
                 Exchanges
               </h2>
             </Link>
@@ -30,7 +30,7 @@ const Home: NextPage = () => {
           </section>
           <section className='py-8'>
             <Link href='/news'>
-              <h2 className='mb-5 cursor-pointer text-xl font-bold hover:text-blue-600'>
+              <h2 className='mb-5 w-fit cursor-pointer text-xl font-bold hover:text-blue-600'>
                 Latest News
               </h2>
             </Link>
