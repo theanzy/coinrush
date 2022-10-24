@@ -87,6 +87,11 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
           </div>
         ) : (
           <>
+            {getCoins.isLoading && (
+              <div className='flex flex-row justify-center p-2'>
+                <Spinner />
+              </div>
+            )}
             {coins.map((c: Coin, i: number) => (
               <RowTemplate
                 key={c.name}
