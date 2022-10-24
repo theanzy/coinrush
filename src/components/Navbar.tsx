@@ -6,7 +6,7 @@ import { MdOutlineClose } from 'react-icons/md';
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <nav className='flex w-full min-w-full items-center border-b bg-white py-4'>
+    <nav className='flex w-full min-w-full items-center border-b bg-white py-4 shadow'>
       <div className='flex-0 block md:hidden'>
         <button
           className='borde flex items-center rounded px-3 py-2 text-[1.7rem] text-gray-800 hover:border-white hover:text-blue-500'
@@ -41,8 +41,8 @@ const Navbar = () => {
           </div>
         )}
         <div
-          className='text-md mt-3 flex flex-col md:mt-0 md:flex-grow md:flex-row [&>a]:py-5 [&>a]:pl-5 [&>a]:text-gray-800
-        hover:[&>a]:bg-blue-500 hover:[&>a]:text-white md:[&>a]:mt-0 md:[&>a]:inline-block hover:[&>a]:md:bg-white hover:md:[&>a]:text-blue-500'
+          className='text-md mt-3 flex flex-col md:mt-0 md:flex-grow md:flex-row [&>a]:py-5 [&>a]:px-3 [&>a]:text-gray-800
+        hover:[&>a]:bg-blue-500 hover:[&>a]:text-white md:[&>a]:mt-0 md:[&>a]:block hover:[&>a]:md:bg-white hover:md:[&>a]:text-blue-500'
           onClick={() => setShowMenu(false)}
         >
           <Link href='/'>
