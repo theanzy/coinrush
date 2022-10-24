@@ -57,6 +57,9 @@ const NewsList = ({ showAll = false }: NewsListProps) => {
         setNews({
           1: response.data,
         });
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
   return (
@@ -96,12 +99,12 @@ const NewsList = ({ showAll = false }: NewsListProps) => {
           <Spinner />
         </div>
       )}
-      {news && news[pageNumber]?.length === 0 && (
+      {(totalNumber === 0 || !news?.[pageNumber]) && !getNews.isLoading ? (
         <div className='flex flex-row justify-center p-10 text-red-600'>
           No more news
         </div>
-      )}
-      {totalNumber && showAll && (
+      ) : null}
+      {totalNumber && totalNumber > 0 && showAll ? (
         <div className='flex flex-row items-end justify-end py-8 pt-4'>
           <Pagination
             currentPage={pageNumber}
@@ -110,7 +113,7 @@ const NewsList = ({ showAll = false }: NewsListProps) => {
             pageSize={PAGE_SIZE}
           />
         </div>
-      )}
+      ) : null}
     </>
   );
 };
