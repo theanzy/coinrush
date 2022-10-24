@@ -40,8 +40,8 @@ const ExchangeList = ({ showAll = true }: ExchangeListProps) => {
     <div className='w-full'>
       <table className='table w-full min-w-full table-auto bg-white text-center text-gray-800'>
         <thead className='bg-gray-20 border-b border-t'>
-          <tr className='[&>th]:px-2 [&>th]:py-1'>
-            <th>#</th>
+          <tr className='[&>th]:px-2 [&>th]:py-3'>
+            <th className='px-0 text-left'>#</th>
             <th className='text-left'>Name</th>
             <th className='text-right'>Trust Score</th>
             <th className='text-right'>24h Trade Volume (BTC)</th>
@@ -54,7 +54,7 @@ const ExchangeList = ({ showAll = true }: ExchangeListProps) => {
                 key={exchange.name}
                 className='border-b bg-white text-gray-800 [&>td]:py-1 [&>td]:px-1'
               >
-                <td>{exchange.rank}</td>
+                <td className='px-0 text-left'>{exchange.rank}</td>
                 <td>
                   <div className='flex items-center py-2'>
                     <Link href={formatUrl(exchange.url)}>
