@@ -8,6 +8,7 @@ import { Coin, Exchange } from '@/types/coin';
 import { useDebounce } from 'src/hooks/useDebounce';
 import CoinListItem from '../CoinListItem';
 import ExchangeListItem from '../ExchangeListItem';
+import Spinner from '../Spinner';
 const NavSearch = () => {
   const getTrending = trpc.crypto.trending.useQuery();
   const searchCrypto = trpc.crypto.search.useMutation();
@@ -87,7 +88,12 @@ const NavSearch = () => {
                 <IoCloseCircleOutline />
               </button>
             </div>
-            <div className='scrollbar flex flex-col gap-4 overflow-y-auto text-sm text-gray-600'>
+            <div className='flex flex-col gap-4 overflow-y-auto text-sm text-gray-600'>
+              {(getTrending.isLoading || searchCrypto.isLoading) && (
+                <div className='flex scale-75 flex-row justify-center py-2'>
+                  <Spinner />
+                </div>
+              )}
               {errorMessage.length > 0 && (
                 <h1 className='mb-1 px-10 pb-1 text-sm text-gray-500'>
                   {errorMessage}
