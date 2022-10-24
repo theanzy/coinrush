@@ -26,6 +26,7 @@ export default function InfinityScroller(props: InfinityScrollerProps) {
           >
             {({ onItemsRendered, ref }) => (
               <List
+                style={{ overflowX: 'hidden' }}
                 height={height}
                 itemCount={itemCount}
                 itemSize={itemSize}

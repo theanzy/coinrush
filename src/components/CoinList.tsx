@@ -31,7 +31,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
     return isItemLoaded(index) ? (
       <div
         style={style}
-        className='grid min-w-[500px] grid-cols-[8%_22%_17%_18%_18%_16%_1%] border-b md:grid-cols-[4%_26%_17%_18%_18%_16%_1%] [&>div]:flex [&>div]:flex-row [&>div]:items-center'
+        className='grid min-w-[500px] grid-cols-[4%_26%_17%_18%_18%_16%_1%] border-b [&>div]:flex [&>div]:flex-row [&>div]:items-center'
       >
         <CoinTableRow coin={coin} />
       </div>
@@ -65,36 +65,38 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
   }, [getCoins.data, showAll]);
 
   return (
-    <div className=' overflow-x-auto'>
-      <div className='grid min-w-[500px] grid-cols-[8%_22%_17%_18%_18%_16%_1%] py-2 font-bold md:grid-cols-[4%_26%_17%_18%_18%_16%_1%] [&>div]:flex [&>div]:flex-row [&>div]:items-center '>
-        <div>#</div>
-        <div>Name</div>
-        <div>Price (USD)</div>
-        <div className='justify-self-end text-right'>24h Change (%)</div>
-        <div className='justify-self-end text-right'>24h Volume (USD)</div>
-        <div className='justify-self-end text-right'>Market Cap (USD)</div>
-      </div>
-      {showAll ? (
-        <div className={`${coins.length === 0 ? 'h-[70px]' : 'h-[700px]'}`}>
-          <InfinityScroller
-            itemCount={itemCount}
-            isItemLoaded={isItemLoaded}
-            itemSize={RowHeight}
-            loadMoreItems={loadMoreItems}
-            rowTemplate={RowTemplate}
-          />
+    <div className='overflow-x-auto'>
+      <div className='min-w-[500px]'>
+        <div className='grid grid-cols-[4%_26%_17%_18%_18%_16%_1%] border-b border-t py-2 font-bold [&>div]:flex [&>div]:flex-row [&>div]:items-center'>
+          <div>#</div>
+          <div>Name</div>
+          <div>Price (USD)</div>
+          <div className='justify-self-end text-right'>24h Change (%)</div>
+          <div className='justify-self-end text-right'>24h Volume (USD)</div>
+          <div className='justify-self-end text-right'>Market Cap (USD)</div>
         </div>
-      ) : (
-        <>
-          {coins.map((c: Coin, i: number) => (
-            <RowTemplate
-              key={c.name}
-              index={i}
-              style={{ height: RowHeight }}
+        {showAll ? (
+          <div className={`${coins.length === 0 ? 'h-[70px]' : 'h-[700px]'}`}>
+            <InfinityScroller
+              itemCount={itemCount}
+              isItemLoaded={isItemLoaded}
+              itemSize={RowHeight}
+              loadMoreItems={loadMoreItems}
+              rowTemplate={RowTemplate}
             />
-          ))}
-        </>
-      )}
+          </div>
+        ) : (
+          <>
+            {coins.map((c: Coin, i: number) => (
+              <RowTemplate
+                key={c.name}
+                index={i}
+                style={{ height: RowHeight }}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 };
