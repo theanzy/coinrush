@@ -31,7 +31,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
     return isItemLoaded(index) ? (
       <div
         style={style}
-        className='grid min-w-[500px] grid-cols-[4%_26%_17%_18%_18%_16%_1%] border-b [&>div]:flex [&>div]:flex-row [&>div]:items-center'
+        className='grid min-w-[750px] grid-cols-[4%_25%_17%_18%_17%_17%_2%] border-b [&>div]:flex [&>div]:flex-row [&>div]:items-center'
       >
         <CoinTableRow coin={coin} />
       </div>
@@ -66,8 +66,8 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
 
   return (
     <div className='custom-scrollbar overflow-x-auto'>
-      <div className='min-w-[500px]'>
-        <div className='grid grid-cols-[4%_26%_17%_18%_18%_16%_1%] border-b border-t py-2 font-bold [&>div]:flex [&>div]:flex-row [&>div]:items-center'>
+      <div className='min-w-[750px]'>
+        <div className='grid grid-cols-[4%_25%_17%_18%_17%_17%_2%] border-b border-t py-2 font-bold [&>div]:flex [&>div]:flex-row [&>div]:items-center'>
           <div>#</div>
           <div>Name</div>
           <div>Price (USD)</div>
