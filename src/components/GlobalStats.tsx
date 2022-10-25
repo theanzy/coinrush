@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { trpc } from '@/utils/trpc';
 
 import {
@@ -14,15 +14,21 @@ import {
   numberFormatter,
 } from '@/utils/format';
 import useIsMobile from 'src/hooks/useIsMobile';
+import Spinner from './Spinner';
 
 const GlobalStats = () => {
-  const globalStats = trpc.crypto.globalStats.useQuery();
+  const globalStats = trpc.crypto.globalStats.useMutation();
+  useEffect(() => {
+    globalStats.mutate();
+  }, []);
   const isMobile = useIsMobile();
   return (
     <>
       <h2 className='py-3 text-xl font-bold'>Crypto stats</h2>
       {globalStats.isLoading ? (
-        'Loading'
+        <div className='flex flex-row justify-center py-2'>
+          <Spinner />
+        </div>
       ) : (
         <div className='grid grid-cols-3 items-center justify-start gap-4'>
           <div className='rounded border px-8 py-4 shadow-sm'>

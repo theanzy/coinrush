@@ -8,7 +8,7 @@ import { Coin } from '@/types/coin';
 import { formatMissingImageUrl } from '@/utils/format';
 
 export const cryptoRouter = t.router({
-  globalStats: t.procedure.query(async () => {
+  globalStats: t.procedure.mutation(async () => {
     const res = await axios.get(`${COIN_API_URL}/global`);
     const result = res.data.data;
     const totalMarketCap: number = Object.keys(result?.total_market_cap).reduce(
