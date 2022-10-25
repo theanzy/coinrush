@@ -2,20 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
-body::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track {
   width: 6px;
   background-color: #eee;
 }
 
-body::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb {
   border-radius: 5px;
   width: 6px;
   background-color: darkgrey;
-  outline: 1px solid slategrey;
+}
+
+/* Handle on hover */
+body::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar:hover::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #777;
 }
 
 .tooltip {

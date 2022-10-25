@@ -65,7 +65,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
   }, [getCoins.data, showAll]);
 
   return (
-    <div className='overflow-x-auto'>
+    <div className='custom-scrollbar overflow-x-auto'>
       <div className='min-w-[500px]'>
         <div className='grid grid-cols-[4%_26%_17%_18%_18%_16%_1%] border-b border-t py-2 font-bold [&>div]:flex [&>div]:flex-row [&>div]:items-center'>
           <div>#</div>

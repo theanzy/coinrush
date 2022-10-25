@@ -15,7 +15,7 @@ const Home: NextPage = () => {
           <section className='py-8'>
             <Link href='/coins'>
               <h2 className='mb-3 w-fit cursor-pointer text-lg font-bold hover:text-blue-600'>
-                Cryptocurrency prices
+                Coin price
               </h2>
             </Link>
             <CoinList showAll={false} />

@@ -92,7 +92,7 @@ const NavSearch = () => {
                 <IoCloseCircleOutline />
               </button>
             </div>
-            <div className='flex flex-col gap-4 overflow-y-auto text-sm text-gray-600'>
+            <div className='custom-scrollbar flex flex-col gap-4 overflow-y-auto text-sm text-gray-600'>
               {(getTrending.isLoading || searchCrypto.isLoading) && (
                 <div className='flex scale-75 flex-row justify-center py-2'>
                   <Spinner />
