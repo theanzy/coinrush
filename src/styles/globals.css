@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+body::-webkit-scrollbar {
+  width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+  width: 6px;
+  background-color: #eee;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  width: 6px;
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
 .tooltip {
   position: relative;
   display: block;
@@ -9,8 +25,8 @@
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: max-content;
-  max-width: 20rem;
+  width: 0;
+  max-width: 15rem;
   background-color: black;
   color: white;
   text-align: center;
@@ -27,7 +43,6 @@
 .tooltip .tooltiptext::after {
   content: '';
   position: absolute;
-
   border-width: 8px;
   border-style: solid;
   border-color: transparent black transparent transparent;
@@ -37,6 +52,7 @@
 }
 .tooltip:hover .tooltiptext {
   visibility: visible;
+  width: max-content;
 }
 @media only screen and (min-width: 765px) {
   .tooltip .tooltiptext {
