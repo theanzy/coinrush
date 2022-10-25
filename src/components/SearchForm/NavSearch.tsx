@@ -10,12 +10,16 @@ import CoinListItem from '../CoinListItem';
 import ExchangeListItem from '../ExchangeListItem';
 import Spinner from '../Spinner';
 const NavSearch = () => {
-  const getTrending = trpc.crypto.trending.useQuery();
+  const getTrending = trpc.crypto.trending.useMutation();
   const searchCrypto = trpc.crypto.search.useMutation();
 
   const [openSearchBox, setOpenSearchBox] = useState(false);
   const [searchText, setSearchText] = useState<string>('');
   const debouncedSearchText = useDebounce<string>(searchText, 500);
+
+  useEffect(() => {
+    getTrending.mutate();
+  }, []);
 
   useEffect(() => {
     if (debouncedSearchText.trim().length === 0) {

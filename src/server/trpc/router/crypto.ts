@@ -173,7 +173,7 @@ export const cryptoRouter = t.router({
       };
       return response;
     }),
-  trending: t.procedure.query(async () => {
+  trending: t.procedure.mutation(async () => {
     const res = await axios.get(`${COIN_API_URL}/search/trending`);
     const result = res.data;
     const coins: Coin[] = result.coins?.map((coin: any) => ({
