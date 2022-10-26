@@ -1,22 +1,23 @@
 /* width */
 .infinityScroller::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 /* Track */
 .infinityScroller::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 /* Handle */
 .infinityScroller::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 /* Handle on hover */
+.infinityScroller:hover::-webkit-scrollbar-thumb,
 .infinityScroller::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
