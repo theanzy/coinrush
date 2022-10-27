@@ -33,7 +33,6 @@ const CoinPriceChart = ({
 
   useEffect(() => {
     const handler = () => {
-      console.log(document.fullscreenElement);
       if (document.fullscreenElement) {
         setFullscreen(true);
       } else {
@@ -66,7 +65,6 @@ const CoinPriceChart = ({
         <button
           className='mr-3 rounded-full bg-white p-3 text-base text-gray-500 hover:bg-gray-100 '
           onClick={() => {
-            console.log('clock');
             containerRef.current?.requestFullscreen();
           }}
         >

@@ -143,10 +143,9 @@ const PriceChart = (props: PriceChartProps) => {
     });
   }, [isMobile]);
   useEffect(() => {
-    console.log(window.outerHeight);
     chartRef.current?.resize(
       containerRef.current?.clientWidth || 500,
-      props.fullscreen ? window.outerHeight * 1.08 : 500
+      props.fullscreen ? window.innerHeight * 0.98 : 500
     );
   }, [props.fullscreen]);
   useLayoutEffect(() => {
