@@ -1,8 +1,8 @@
 import { trpc } from '@/utils/trpc';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PriceChart from './Chart';
 import Spinner from './Spinner';
-
+import { BsFullscreen } from 'react-icons/bs';
 type CoinPriceChartProps = {
   coinId: string;
   coinName: string;
@@ -23,10 +23,27 @@ const CoinPriceChart = ({
   coinName,
   shortName,
 }: CoinPriceChartProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const [selectedPeriod, setSelectedPeriod] = useState('24h');
   const getMarketChart = trpc.crypto.getMarketChart.useMutation();
+  const [fullscreen, setFullscreen] = useState(false);
   const [localMarketChart, setLocalMarketChart] =
     useState<typeof getMarketChart.data>();
+
+  useEffect(() => {
+    const handler = () => {
+      console.log(document.fullscreenElement);
+      if (document.fullscreenElement) {
+        setFullscreen(true);
+      } else {
+        setFullscreen(false);
+      }
+    };
+    const elem = containerRef.current;
+    elem?.addEventListener('fullscreenchange', handler);
+    return () => elem?.removeEventListener('fullscreenchange', handler);
+  }, []);
   useEffect(() => {
     getMarketChart
       .mutateAsync({
@@ -40,9 +57,23 @@ const CoinPriceChart = ({
         }
       });
   }, [selectedPeriod, PERIODS, coinId]);
+  console.log({ fullscreen });
+
   return (
     <>
-      <div className='pb-3 text-xl font-bold'>{coinName} to USD Chart</div>
+      <div className='flex flex-row items-center justify-between'>
+        <div className='pb-3 text-xl font-bold'>{coinName} to USD Chart</div>
+        <button
+          className='mr-3 rounded-full bg-white p-3 text-base text-gray-500 hover:bg-gray-100 '
+          onClick={() => {
+            console.log('clock');
+            containerRef.current?.requestFullscreen();
+          }}
+        >
+          <BsFullscreen />
+        </button>
+      </div>
+      <div className='p-1'></div>
       <div className='flex flex-row items-center justify-center self-end'>
         {Object.keys(PERIODS).map((period) => (
           <button
@@ -63,13 +94,23 @@ const CoinPriceChart = ({
       <div className='flex flex-row items-center justify-center'>
         {getMarketChart.isLoading && <Spinner />}
       </div>
-      {localMarketChart && (
-        <PriceChart
-          prices={localMarketChart.prices}
-          volumes={localMarketChart.volumes}
-          title={shortName}
-        />
-      )}
+      <div
+        className='w-full overflow-hidden bg-white'
+        style={{
+          height: 500,
+          padding: fullscreen ? 20 : 0,
+        }}
+        ref={containerRef}
+      >
+        {localMarketChart ? (
+          <PriceChart
+            fullscreen={fullscreen}
+            prices={localMarketChart.prices}
+            volumes={localMarketChart.volumes}
+            title={shortName}
+          />
+        ) : null}
+      </div>
     </>
   );
 };

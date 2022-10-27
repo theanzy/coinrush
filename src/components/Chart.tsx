@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   createChart,
   ColorType,
@@ -93,6 +93,7 @@ type PriceChartProps = {
   prices: { time: number; value: number }[];
   volumes: { time: number; value: number }[];
   title: string;
+  fullscreen: boolean;
 };
 
 const PriceChart = (props: PriceChartProps) => {
@@ -141,11 +142,18 @@ const PriceChart = (props: PriceChartProps) => {
       },
     });
   }, [isMobile]);
+  useEffect(() => {
+    console.log(window.outerHeight);
+    chartRef.current?.resize(
+      containerRef.current?.clientWidth || 500,
+      props.fullscreen ? window.outerHeight * 1.08 : 500
+    );
+  }, [props.fullscreen]);
   useLayoutEffect(() => {
     if (!containerRef.current) {
       return;
     }
-
+    console.log(containerRef.current?.clientHeight, 'h');
     const chart = createChart(containerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: COLORS.backgroundColor },
@@ -156,7 +164,7 @@ const PriceChart = (props: PriceChartProps) => {
           visible: false,
         },
       },
-      width: containerRef.current.clientWidth,
+      width: containerRef.current?.clientWidth,
       height: 500,
       timeScale: {
         timeVisible: true,
@@ -242,6 +250,8 @@ const PriceChart = (props: PriceChartProps) => {
       ref={containerRef}
       style={{
         position: 'relative',
+        width: '100%',
+        height: '100%',
       }}
     >
       <Tooltip
