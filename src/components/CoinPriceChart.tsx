@@ -59,10 +59,12 @@ const CoinPriceChart = ({
 
   return (
     <>
-      <div className='flex flex-row items-center justify-between'>
-        <div className='pb-3 text-xl font-bold'>{coinName} to USD Chart</div>
+      <div className='flex flex-row items-center justify-between text-base'>
+        <h2 className='py-3 pb-3 align-middle text-xl font-bold'>
+          {coinName} to USD Chart
+        </h2>
         <button
-          className='mr-3 rounded-full bg-white p-3 text-base text-gray-500 hover:bg-gray-100 '
+          className='text-al mr-3 rounded-full bg-white p-3 align-middle  text-gray-500 hover:bg-gray-100'
           onClick={() => {
             containerRef.current?.requestFullscreen();
           }}
