@@ -56,7 +56,6 @@ const CoinPriceChart = ({
         }
       });
   }, [selectedPeriod, PERIODS, coinId]);
-  console.log({ fullscreen });
 
   return (
     <>

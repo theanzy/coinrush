@@ -16,14 +16,12 @@ const NewsList = ({ showAll = false }: NewsListProps) => {
   const [news, setNews] = useState<Record<number, News[]>>();
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    console.log('fetch again');
     if (news && news[pageNumber]) {
       return;
     }
     if (getNews.isLoading) {
       return;
     }
-    console.log('fetch again', getNews.isLoading);
 
     getNews
       .mutateAsync({

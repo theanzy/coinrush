@@ -142,17 +142,11 @@ const PriceChart = (props: PriceChartProps) => {
       },
     });
   }, [isMobile]);
-  useEffect(() => {
-    chartRef.current?.resize(
-      containerRef.current?.clientWidth || 500,
-      props.fullscreen ? window.innerHeight * 0.98 : 500
-    );
-  }, [props.fullscreen]);
+
   useLayoutEffect(() => {
     if (!containerRef.current) {
       return;
     }
-    console.log(containerRef.current?.clientHeight, 'h');
     const chart = createChart(containerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: COLORS.backgroundColor },
@@ -209,6 +203,14 @@ const PriceChart = (props: PriceChartProps) => {
   }, [props.title]);
 
   useLayoutEffect(() => {
+    const fullScreenHeight = containerRef?.current?.clientHeight || 500;
+    const height = props.fullscreen ? fullScreenHeight : 500;
+    chartRef?.current?.applyOptions({
+      width: containerRef?.current?.clientWidth ?? 0,
+      height: height,
+    });
+  }, [props.fullscreen]);
+  useLayoutEffect(() => {
     if (!chartRef.current || !seriesRef.current || !containerRef.current) {
       return;
     }
@@ -235,6 +237,7 @@ const PriceChart = (props: PriceChartProps) => {
       }
       chartRef.current.applyOptions({
         width: containerRef?.current?.clientWidth ?? 0,
+        height: containerRef?.current?.clientHeight ?? 500,
       });
       chartRef.current.timeScale().fitContent();
     };
