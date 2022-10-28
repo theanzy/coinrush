@@ -240,6 +240,7 @@ const PriceChart = (props: PriceChartProps) => {
         height: containerRef?.current?.clientHeight ?? 500,
       });
       chartRef.current.timeScale().fitContent();
+      chartRef.current.priceScale().applyOptions({ autoScale: true });
     };
     window.addEventListener('resize', handleResize);
     return () => {
