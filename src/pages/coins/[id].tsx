@@ -266,7 +266,7 @@ const CoinPage = () => {
                 shortName={getCoin.data.shortName}
               />
             </div>
-            <div className='p-2'></div>
+            <div className='p-3'></div>
             {getCoin.data.description.length > 0 && (
               <div>
                 <h3 className='text-2xl font-bold'>
