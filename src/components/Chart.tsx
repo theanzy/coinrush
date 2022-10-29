@@ -4,6 +4,9 @@ import {
   ColorType,
   ISeriesApi,
   IChartApi,
+  SingleValueData,
+  WhitespaceData,
+  HistogramData,
 } from 'lightweight-charts';
 import { CrosshairMoveData } from './types';
 import { formatCurrency } from '@/utils/format';
@@ -100,7 +103,8 @@ const PriceChart = (props: PriceChartProps) => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const seriesRef = useRef<ISeriesApi<'Baseline'> | null>(null);
+  const baselineRef = useRef<ISeriesApi<'Baseline'> | null>(null);
+  const histogramRef = useRef<ISeriesApi<'Histogram'> | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const [tooltipData, setTooltipData] = useState<TooltipData>({
     shown: false,
@@ -129,6 +133,7 @@ const PriceChart = (props: PriceChartProps) => {
       date: date ?? '',
     }));
   };
+
   useLayoutEffect(() => {
     if (!chartRef.current) {
       return;
@@ -185,6 +190,13 @@ const PriceChart = (props: PriceChartProps) => {
           }
         },
       },
+      rightPriceScale: {
+        scaleMargins: {
+          top: 0.01,
+          bottom: 0.35,
+        },
+        borderVisible: false,
+      },
     });
     chartRef.current = chart;
     const baselineSeries = chart.addBaselineSeries({
@@ -196,7 +208,19 @@ const PriceChart = (props: PriceChartProps) => {
       bottomFillColor1: 'rgba( 239, 83, 80, 0.05)',
       bottomFillColor2: 'rgba( 239, 83, 80, 0.28)',
     });
-    seriesRef.current = baselineSeries;
+    baselineRef.current = baselineSeries;
+
+    const histogram = chart.addHistogramSeries({
+      priceFormat: {
+        type: 'volume',
+      },
+      priceScaleId: '',
+      priceLineVisible: false,
+      color: '#dedede',
+      lastValueVisible: false,
+    });
+    histogramRef.current = histogram;
+
     return () => {
       chart.remove();
     };
@@ -210,22 +234,39 @@ const PriceChart = (props: PriceChartProps) => {
       height: height,
     });
   }, [props.fullscreen]);
+
   useLayoutEffect(() => {
-    if (!chartRef.current || !seriesRef.current || !containerRef.current) {
+    if (
+      !chartRef.current ||
+      !baselineRef.current ||
+      !containerRef.current ||
+      !histogramRef.current
+    ) {
       return;
     }
-    seriesRef.current.setData(props.prices as any[]);
-    seriesRef.current.applyOptions({
+    baselineRef.current.setData(props.prices as SingleValueData[]);
+    baselineRef.current.applyOptions({
       baseValue: {
         type: 'price',
         price: props.prices[props.prices.length - 1]?.value ?? 0,
       },
     });
+
+    histogramRef.current.priceScale().applyOptions({
+      scaleMargins: {
+        top: 0.7,
+        bottom: 0,
+      },
+      drawTicks: false,
+    });
+
+    histogramRef.current.setData(props.volumes as HistogramData[]);
+
     chartRef.current.timeScale().fitContent();
     const crosshairmoveHandler = handleCrosshairMove({
       volumes: props.volumes,
       container: containerRef.current,
-      series: seriesRef.current,
+      series: baselineRef.current,
       tooltip: tooltipRef.current,
       onCrosshairData: handleCrosshairData,
     });
