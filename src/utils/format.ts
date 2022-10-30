@@ -1,6 +1,7 @@
 export const numberFormatter = new Intl.NumberFormat('en-US', {
+  minimumIntegerDigits: 1,
   minimumFractionDigits: 2,
-  maximumSignificantDigits: 2,
+  maximumFractionDigits: 2,
 });
 
 export const formatPercentage = (amount: number): string => {

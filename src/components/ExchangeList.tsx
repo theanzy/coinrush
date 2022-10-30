@@ -57,11 +57,8 @@ const ExchangeList = ({ showAll = true }: ExchangeListProps) => {
                 <td className='px-0 text-left'>{exchange.rank}</td>
                 <td>
                   <div className='flex items-center py-2'>
-                    <Link href={formatUrl(exchange.url)}>
-                      <a
-                        rel='noopener noreferrer'
-                        target='_blank'
-                      >
+                    <Link href={`/exchanges/${exchange.id}`}>
+                      <a>
                         <Image
                           className='cursor-pointer'
                           src={
@@ -75,7 +72,9 @@ const ExchangeList = ({ showAll = true }: ExchangeListProps) => {
                       </a>
                     </Link>
                     <div className='ml-4 flex items-center'>
-                      {exchange.name}
+                      <Link href={`/exchanges/${exchange.id}`}>
+                        <a>{exchange.name}</a>
+                      </Link>
                     </div>
                   </div>
                 </td>

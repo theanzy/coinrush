@@ -7,6 +7,17 @@ export interface Exchange {
   imageUrl: string;
   tradeVolume24hBTC: number;
 }
+
+export interface Ticker {
+  num: number;
+  base: string;
+  target: string;
+  price: number;
+  volume: number;
+  tradeUrl: string;
+  baseCoinId: string;
+}
+
 export type Coin = {
   rank: number;
   id: string;

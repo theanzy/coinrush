@@ -11,9 +11,7 @@ const ExchangeListItem = (props: ExchangeListItemProps) => {
 
   return (
     <Link
-      // TODO exchange pages
-      // href={`/exchanges/${exchange.id}`}
-      href={`/exchanges`}
+      href={`/exchanges/${exchange.id}`}
       key={exchange.id}
     >
       <a

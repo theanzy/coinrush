@@ -1,4 +1,4 @@
-import { Exchange } from './../../../types/coin';
+import { Exchange, Ticker } from './../../../types/coin';
 import { AsyncReturnType } from '@/utils/tsbs';
 import axios from 'axios';
 import { t } from '../trpc';
@@ -173,17 +173,78 @@ export const cryptoRouter = t.router({
       };
       return response;
     }),
+  getExchange: t.procedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      const response = await axios.get(`${COIN_API_URL}/exchanges/${input.id}`);
+      const exchangeData = response.data;
+
+      const btcToUSD = exchangeData.tickers.find(
+        (ticker: Ticker) => ticker.base === 'BTC' && ticker.target === 'USDT'
+      )?.converted_last.usd;
+      const tickers: Ticker[] = exchangeData.tickers.map(
+        (
+          ticker: {
+            base: string;
+            target: string;
+            converted_last: { usd: number };
+            converted_volume: { usd: number };
+            trade_url: string;
+            coin_id: string;
+          },
+          i: number
+        ) => ({
+          num: i + 1,
+          base: ticker.base,
+          target: ticker.target,
+          price: ticker.converted_last.usd,
+          volume: ticker.converted_volume.usd,
+          tradeUrl: ticker.trade_url,
+          baseCoinId: ticker.coin_id,
+        })
+      );
+      return {
+        name: exchangeData.name,
+        yearEstablished: exchangeData.year_established,
+        country: exchangeData.country,
+        description: exchangeData.description,
+        url: exchangeData.url,
+        imageUrl: exchangeData.image,
+        facebook: exchangeData.facebook_url,
+        reddit: exchangeData.reddit_url,
+        telegram_url: exchangeData.telegram_url,
+        twitterHandle: exchangeData.twitter_handle,
+        centralized: exchangeData.centralized,
+        trustScore: exchangeData.trust_score,
+        rank: exchangeData.trust_score_rank,
+        tradeVolume24hBTC: exchangeData.trade_volume_24h_btc,
+        tradeVolume24hUSD:
+          exchangeData.trade_volume_24h_btc * (btcToUSD as number),
+        tickers,
+      };
+    }),
   trending: t.procedure.mutation(async () => {
     const res = await axios.get(`${COIN_API_URL}/search/trending`);
     const result = res.data;
-    const coins: Coin[] = result.coins?.map((coin: any) => ({
-      name: coin.item.name,
-      id: coin.item.id,
-      shortName: coin.item.symbol,
-      rank: coin.item.market_cap_rank,
-      imageUrl: coin.item.large,
-      priceBTC: coin.item.price_btc,
-    }));
+    const coins: Coin[] = result.coins?.map(
+      (coin: {
+        item: {
+          name: string;
+          id: string;
+          symbol: string;
+          market_cap_rank: number;
+          large: string;
+          price_btc: number;
+        };
+      }) => ({
+        name: coin.item.name,
+        id: coin.item.id,
+        shortName: coin.item.symbol,
+        rank: coin.item.market_cap_rank,
+        imageUrl: coin.item.large,
+        priceBTC: coin.item.price_btc,
+      })
+    );
     return { coins };
   }),
   search: t.procedure
