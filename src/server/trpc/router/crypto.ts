@@ -176,12 +176,16 @@ export const cryptoRouter = t.router({
   getExchange: t.procedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
+      const getExchangeRate = async (fiat: string): Promise<number> => {
+        const res = await axios.get(`${COIN_API_URL}/exchange_rates`);
+        const result = res.data.rates;
+        const btcToFiat = result[fiat];
+        return btcToFiat.value;
+      };
       const response = await axios.get(`${COIN_API_URL}/exchanges/${input.id}`);
       const exchangeData = response.data;
 
-      const btcToUSD = exchangeData.tickers.find(
-        (ticker: Ticker) => ticker.base === 'BTC' && ticker.target === 'USDT'
-      )?.converted_last.usd;
+      const btcToUSD = await getExchangeRate('usd');
       const tickers: Ticker[] = exchangeData.tickers.map(
         (
           ticker: {
