@@ -8,14 +8,13 @@ import { Coin } from '@/types/coin';
 type CoinListProps = {
   showAll?: boolean;
 };
-const RowHeight = 70;
+const ROW_HEIGHT = 70;
+
 const CoinList = ({ showAll = true }: CoinListProps) => {
   const getCoins = trpc.crypto.coins.useMutation();
-  type Coins = typeof getCoins.data;
-  const [coins, setCoins] = useState<Coins>([]);
+  const [coins, setCoins] = useState<Coin[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const itemCount = hasMore ? coins.length + 1 : coins.length;
   const isItemLoaded = (index: number) => !hasMore || index < coins.length;
   const loadMoreItems = async (startIndex: number, stopIndex: number) => {
     if (!getCoins.isLoading && hasMore) {
@@ -28,7 +27,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
   }): JSX.Element => {
     const { index, style } = props;
     const coin = coins[index];
-    return isItemLoaded(index) ? (
+    return isItemLoaded(index) && coin ? (
       <div
         style={style}
         className='grid min-w-[750px] grid-cols-[4%_25%_17%_18%_17%_17%_2%] border-b [&>div]:flex [&>div]:flex-row [&>div]:items-center'
@@ -50,7 +49,7 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
       return;
     }
     if (!getCoins.isLoading && hasMore) {
-      getCoins.mutate({ pageNumber: currentPage });
+      getCoins.mutate({ pageNumber: currentPage, limit: 50 });
     }
   }, [currentPage]);
   useEffect(() => {
@@ -75,12 +74,17 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
           <div className='justify-self-end text-right'>24h Volume (USD)</div>
           <div className='justify-self-end text-right'>Market Cap (USD)</div>
         </div>
+        {getCoins.isError ? (
+          <div className='mx-auto my-3 flex flex-row justify-center text-red-500'>
+            No data for coins
+          </div>
+        ) : null}
         {showAll ? (
           <div className={`${coins.length === 0 ? 'h-[70px]' : 'h-[700px]'}`}>
             <InfinityScroller
-              itemCount={itemCount}
+              itemCount={hasMore ? coins.length + 1 : coins.length}
               isItemLoaded={isItemLoaded}
-              itemSize={RowHeight}
+              itemSize={ROW_HEIGHT}
               loadMoreItems={loadMoreItems}
               rowTemplate={RowTemplate}
             />
@@ -92,11 +96,11 @@ const CoinList = ({ showAll = true }: CoinListProps) => {
                 <Spinner />
               </div>
             )}
-            {coins.map((c: Coin, i: number) => (
+            {coins.slice(0, 10).map((c: Coin, i: number) => (
               <RowTemplate
                 key={c.name}
                 index={i}
-                style={{ height: RowHeight }}
+                style={{ height: ROW_HEIGHT }}
               />
             ))}
           </>

@@ -87,6 +87,11 @@ const ExchangeList = ({ showAll = true }: ExchangeListProps) => {
           </tbody>
         )}
       </table>
+      {getExchanges.isError ? (
+        <div className='my-3 mx-auto flex flex-row justify-center text-red-500'>
+          No data for exchanges
+        </div>
+      ) : null}
       {getExchanges.isLoading && (
         <div className='flex flex-row items-center justify-center py-10'>
           <Spinner />

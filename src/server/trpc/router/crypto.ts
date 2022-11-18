@@ -45,7 +45,7 @@ export const cryptoRouter = t.router({
         input.limit ?? 10
       );
 
-      const data = result.map(
+      const data: Coin[] = result.map(
         (coin: {
           market_cap_rank: number;
           id: string;
