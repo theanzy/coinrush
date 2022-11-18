@@ -1,3 +1,4 @@
+import { News } from './../../../types/news';
 import { REMOTE_IMAGE_FECTH_URL } from './../../../utils/env';
 import axios from 'axios';
 import { t } from '../trpc';
@@ -30,9 +31,9 @@ export const newsRouter = t.router({
           .getDate()
           .toLocaleString(
             'en-US'
-          )}&sortBy=publishedAt&apiKey=${NEWS_API_KEY}&pageSize=10&page=${
-          input.pageNumber
-        }&language=en`
+          )}&sortBy=publishedAt&apiKey=${NEWS_API_KEY}&pageSize=${
+          input.perPage
+        }&page=${input.pageNumber}&language=en`
       );
       const result = res.data;
       const articles = result.articles.map(
@@ -56,7 +57,7 @@ export const newsRouter = t.router({
           };
         }
       );
-      const response = {
+      const response: { total: number; data: News[] } = {
         total: result.totalResults,
         data: articles,
       };

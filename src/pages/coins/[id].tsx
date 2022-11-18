@@ -16,6 +16,7 @@ import Image from 'next/image';
 import Spinner from '@/components/Spinner';
 import { formatCurrency, formatPercentage } from '@/utils/format';
 import useIsMobile from 'src/hooks/useIsMobile';
+import News from '@/components/News';
 
 const CoinPriceChart = dynamic(import('@/components/CoinPriceChart'), {
   ssr: false,
@@ -31,6 +32,20 @@ const CoinPage = () => {
       getCoin.mutate({ id: id as string });
     }
   }, [router.isReady, id]);
+  const getNews = trpc.news.getNews.useMutation();
+
+  useEffect(() => {
+    if (!getCoin.data?.name) {
+      return;
+    }
+    getNews.mutate({
+      pageNumber: 1,
+      perPage: 5,
+      searchText: getCoin.data.name,
+    });
+  }, [getCoin.data?.name]);
+
+  console.log(getNews.data);
   return (
     <Layout>
       {getCoin.isLoading && (
@@ -259,14 +274,38 @@ const CoinPage = () => {
                 </div>
               </div>
             </div>
-            <div className='flex flex-col py-10'>
-              <CoinPriceChart
-                coinName={getCoin.data.name}
-                coinId={getCoin.data.id}
-                shortName={getCoin.data.shortName}
-              />
+            <div className='flex flex-col gap-6 md:flex-row'>
+              <div className='md:w-2/3'>
+                <CoinPriceChart
+                  coinName={getCoin.data.name}
+                  coinId={getCoin.data.id}
+                  shortName={getCoin.data.shortName}
+                />
+              </div>
+              <div className='pt-2 md:w-1/3'>
+                <h3 className='mb-5 text-xl font-bold'>
+                  Latest News on {getCoin.data.name}
+                </h3>
+                {getNews.isLoading ? (
+                  <div>Loading...</div>
+                ) : (
+                  <div className='mx-0 flex w-full flex-col gap-5'>
+                    {getNews.data && getNews.data.data.length > 0 ? (
+                      getNews.data.data.map((news, i) => (
+                        <News
+                          key={i}
+                          news={news}
+                          compact={true}
+                        />
+                      ))
+                    ) : (
+                      <div>Nothing new...</div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-            <div className='p-3'></div>
+            <div className='p-10'></div>
             {getCoin.data.description.length > 0 && (
               <div>
                 <h3 className='text-2xl font-bold'>

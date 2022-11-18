@@ -12,6 +12,7 @@ type News = {
 
 type NewsProps = {
   news: News;
+  compact?: boolean;
 };
 
 const hoursFromNow = (timestamp: string) => {
@@ -23,23 +24,30 @@ const hoursFromNow = (timestamp: string) => {
   }
   return time.fromNow();
 };
-const News = ({ news }: NewsProps) => {
+const News = ({ news, compact = false }: NewsProps) => {
+  const descriptionLimit = compact ? 10 : 200;
   return (
     <div className='flex flex-col gap-5 md:flex-row'>
-      <a
-        href={news.url}
-        rel='noopener noreferrer'
-        target='_blank'
-        className='relative h-[270px] cursor-pointer overflow-hidden rounded-lg md:h-[150px] md:basis-1/5'
+      {!compact ? (
+        <a
+          href={news.url}
+          rel='noopener noreferrer'
+          target='_blank'
+          className='relative h-[270px] cursor-pointer overflow-hidden rounded-lg md:h-[150px] md:basis-1/5'
+        >
+          <Image
+            className='cursor-pointer duration-75 hover:scale-110'
+            src={news.urlToImage ?? '/static/images/article-placeholder.png'}
+            alt={news.title}
+            layout='fill'
+          />
+        </a>
+      ) : null}
+      <div
+        className={`flex flex-col gap-1 ${
+          compact ? 'md:w-full' : 'md:basis-4/5'
+        }`}
       >
-        <Image
-          className='cursor-pointer duration-75 hover:scale-110'
-          src={news.urlToImage ?? '/static/images/article-placeholder.png'}
-          alt={news.title}
-          layout='fill'
-        />
-      </a>
-      <div className='flex flex-col gap-1 md:basis-4/5'>
         <div className='cursor-pointer text-xl font-bold hover:text-blue-700'>
           <a
             href={news.url}
@@ -50,8 +58,8 @@ const News = ({ news }: NewsProps) => {
           </a>
         </div>
         <div className='hidden md:block'>
-          {news.description?.slice(0, 300)}
-          {news.description?.length > 300 ? '...' : ''}
+          {news.description?.split(' ').slice(0, descriptionLimit).join(' ')}
+          {news.description?.split(' ').length > descriptionLimit ? '...' : ''}
         </div>
         <div className='flex flex-row gap-5 text-sm text-gray-500'>
           <div>{news.source}</div>

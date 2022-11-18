@@ -58,7 +58,7 @@ const CoinPriceChart = ({
   }, [selectedPeriod, PERIODS, coinId]);
 
   return (
-    <>
+    <div className='flex flex-col'>
       <div className='flex flex-row items-center justify-between text-base'>
         <h2 className='py-3 pb-3 align-middle text-xl font-bold'>
           {coinName} to USD Chart
@@ -110,7 +110,7 @@ const CoinPriceChart = ({
           />
         ) : null}
       </div>
-    </>
+    </div>
   );
 };
 
